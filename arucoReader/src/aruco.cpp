@@ -62,6 +62,9 @@ void aruco::trackMarkerThread() {
         }
         bool canContinue = true;
         int rightId = 0;
+        if(ids.size() == 1)
+            idr = ids[0];
+        
         /*while (rightId < ids.size()) {
             if (ids[rightId] != 0) {
                 canContinue = true;
