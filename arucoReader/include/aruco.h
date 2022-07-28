@@ -30,6 +30,7 @@ public:
     double forward = 0.0;
     double rightLeft = 0.0;
     std::pair<int, bool> leftOverAngle{0, false};
+    int idr = 0;
 
 private:
     bool runCamera;
