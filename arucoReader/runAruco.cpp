@@ -8,7 +8,7 @@
 void runAruco(aruco &detector){
     while(true){
         std::cout << "forward: " << detector.forward << " right left: " << detector.rightLeft << " updown: " << detector.upDown
-                  << " angle: " << detector.leftOverAngle.first << " clockwise: " << detector.leftOverAngle.second << std::endl;
+                  << " angle: " << detector.leftOverAngle.first << " clockwise: " << detector.leftOverAngle.second << " id: " << detector.idr << std::endl;
     }
 }
 int arucoReaderRun(){
