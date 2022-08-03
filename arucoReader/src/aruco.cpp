@@ -65,6 +65,11 @@ void aruco::trackMarkerThread() {
         if(ids.size() == 1)
             idr = ids[0];
         
+        if(ids.size() == 0)
+            ifArucoExist = false;
+        else
+            ifArucoExist = true;
+        
         /*while (rightId < ids.size()) {
             if (ids[rightId] != 0) {
                 canContinue = true;
