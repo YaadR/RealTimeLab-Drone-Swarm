@@ -31,6 +31,7 @@ public:
     double rightLeft = 0.0;
     std::pair<int, bool> leftOverAngle{0, false};
     int idr = 0;
+    bool ifArucoExist;
 
 private:
     bool runCamera;
