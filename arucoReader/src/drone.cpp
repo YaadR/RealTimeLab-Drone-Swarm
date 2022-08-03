@@ -1,6 +1,5 @@
-// #include iostream
-
-enum data {x,y,z,alpa,rotation};
+#include "drone.h"
+#include "arucoReader"
 
 class drone{
     private:
@@ -17,7 +16,7 @@ class drone{
     
     data get_leader_position(){
         data positionChange;
-        //aruco reader
+        arucoReaderRun();
         return positionChange;
     }
     void move_drone(data positionChange){

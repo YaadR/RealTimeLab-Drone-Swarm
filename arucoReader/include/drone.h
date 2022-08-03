@@ -1,6 +1,3 @@
-// #include iostream
-
-enum data {x,y,z,alpa,rotation};
 
 class drone{
     private:
