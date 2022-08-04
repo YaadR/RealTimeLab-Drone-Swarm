@@ -1,6 +1,6 @@
 #include <unistd.h>
 
-class data
+class arocuLeaderInfo
 {
 private:
     double: forward;

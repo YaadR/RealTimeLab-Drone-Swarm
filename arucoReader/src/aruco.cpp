@@ -5,6 +5,13 @@
 #include <unistd.h>
 #include "../include/aruco.h"
 
+aruco::printAruco (){
+    std::cout<<forward<<','<<rightLeft<<','
+    <<upDown<<','<<leftOverAngle.first<<','
+    <<leftOverAngle.second<<','<<idr<<','
+    <<ifArucoExist<< std::endl;
+}        
+
 std::vector<cv::Mat> aruco::getCameraCalibration(const std::string &path) {
     cv::FileStorage fs(path, cv::FileStorage::READ);
     if (!fs.isOpened()) throw std::runtime_error("CameraParameters::readFromXMLFile could not open file:" + path);

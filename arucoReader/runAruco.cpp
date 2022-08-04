@@ -5,13 +5,16 @@
 #include <nlohmann/json.hpp>
 #include <unistd.h>
 #include "aruco.h"
+#include "arocuLeaderInfo.h"
+#include "drone.h"
+
 void runAruco(aruco &detector){
     while(true){
         std::cout << "forward: " << detector.forward << " right left: " << detector.rightLeft << " updown: " << detector.upDown
                   << " angle: " << detector.leftOverAngle.first << " clockwise: " << detector.leftOverAngle.second << " id: " << detector.idr << " read Aruco: " << detector.ifArucoExist << std::endl;
     }
 }
-int arucoReaderRun(){
+void tzokArucoReaderRun(){
     std::ifstream programData("../config.json");
     nlohmann::json data;
     programData >> data;
@@ -31,6 +34,8 @@ int arucoReaderRun(){
 }
 int main(){
     drone ourDrone;
-    ourDrone.run();
+    ourDrone.tzokArucoReaderRun();
+    ourDrone.currentInfo.printAruco();
+    // tzokArucoReaderRun();
     return 0;
 }
