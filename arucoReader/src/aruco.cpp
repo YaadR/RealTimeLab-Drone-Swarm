@@ -4,11 +4,23 @@
 
 #include <unistd.h>
 #include "../include/aruco.h"
+#include <iostream>
 
-aruco::printAruco (){
-    std::cout<<forward<<','<<rightLeft<<','
-    <<upDown<<','<<leftOverAngle.first<<','
-    <<leftOverAngle.second<<','<<idr<<','
+aruco& operator= (const aruco &origin){
+    this->upDown = origin.upDown;
+    this->forward = origin.forward;
+    this->rightLeft = origin.rightLeft;
+    this->idr = origin.idr;
+    this->ifArucoExist = origin.ifArucoExist;
+    this-> leftOverAngel = origin.leftOverAngle;
+    this->runCamera = origin.runCamera;
+    return *this;
+}
+
+void aruco::printAruco (){
+    std::cout<<forward<<" , "<<rightLeft<<" , "
+    <<upDown<<" , "<<leftOverAngle.first<<" , "
+    <<leftOverAngle.second<<" , "<<idr<<" , "
     <<ifArucoExist<< std::endl;
 }        
 

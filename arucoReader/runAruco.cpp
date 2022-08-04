@@ -8,13 +8,14 @@
 #include "arocuLeaderInfo.h"
 #include "drone.h"
 
-void runAruco(aruco &detector){
+void runAruco(aruco &detector, drone &drone){
     while(true){
         std::cout << "forward: " << detector.forward << " right left: " << detector.rightLeft << " updown: " << detector.upDown
                   << " angle: " << detector.leftOverAngle.first << " clockwise: " << detector.leftOverAngle.second << " id: " << detector.idr << " read Aruco: " << detector.ifArucoExist << std::endl;
+        drone.currentInfo = detctor;
     }
 }
-void tzokArucoReaderRun(){
+void tzokArucoReaderRun(drone &drone){
     std::ifstream programData("../config.json");
     nlohmann::json data;
     programData >> data;
@@ -24,16 +25,16 @@ void tzokArucoReaderRun(){
     float currentMarkerSize = data["currentMarkerSize"];
     if (isCameraString){
         std::string cameraString = data["cameraString"];
-        aruco detector(yamlCalibrationPath,cameraString,currentMarkerSize);
-        runAruco(detector);
+        aruco detector(yamlCalibrationPath,cameraString,currentMarkerSize); 
     }else{
         int cameraPort = data["cameraPort"];
         aruco detector(yamlCalibrationPath,cameraPort,currentMarkerSize);
-        runAruco(detector);
     }
+    runAruco(detector , drone);
 }
 int main(){
     drone ourDrone;
+
     ourDrone.tzokArucoReaderRun();
     ourDrone.currentInfo.printAruco();
     // tzokArucoReaderRun();
