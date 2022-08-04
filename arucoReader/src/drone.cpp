@@ -7,11 +7,11 @@ drone::drone(/* args */){}
 
 drone::~drone(){}
 
-aruco drone::get_leader_position(){
-    aruco positionChange;
-    positionChange = arucoReaderRun();
-    return positionChange;
-}
+// aruco drone::get_leader_position(){
+//     aruco positionChange;
+//     positionChange = arucoReaderRun();
+//     return positionChange;
+// }
 void drone::move_drone(aruco positionChange){
     int rightDrone = positionChange.rightLeft;
     
@@ -38,5 +38,8 @@ void drone::move_drone(aruco positionChange){
 }
 
 void drone::run(){
+    while (true){
+        move_drone();
+    }
 }
 

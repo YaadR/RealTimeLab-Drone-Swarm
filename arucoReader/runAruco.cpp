@@ -10,8 +10,14 @@
 
 void runAruco(aruco &detector, drone &drone){
     while(true){
-        std::cout << "forward: " << detector.forward << " right left: " << detector.rightLeft << " updown: " << detector.upDown
-                  << " angle: " << detector.leftOverAngle.first << " clockwise: " << detector.leftOverAngle.second << " id: " << detector.idr << " read Aruco: " << detector.ifArucoExist << std::endl;
+        std::cout << "forward: " << detector.forward 
+        << " right left: " << detector.rightLeft 
+        << " updown: " << detector.upDown
+        << " angle: " << detector.leftOverAngle.first 
+        << " clockwise: " << detector.leftOverAngle.second 
+        << " id: " << detector.idr 
+        << " read Aruco: " << detector.ifArucoExist << std::endl;
+        
         drone.currentInfo = detctor;
     }
 }
@@ -32,11 +38,15 @@ void tzokArucoReaderRun(drone &drone){
     }
     runAruco(detector , drone);
 }
+
 int main(){
     drone ourDrone;
+    
+    ourDrone.run();
 
-    ourDrone.tzokArucoReaderRun();
-    ourDrone.currentInfo.printAruco();
-    // tzokArucoReaderRun();
+    // tzokArucoReaderRun(ourDrone);
+
+    // ourDrone.currentInfo.printAruco();
+
     return 0;
 }
