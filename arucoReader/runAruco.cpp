@@ -18,7 +18,7 @@ void runAruco(aruco &detector, drone &drone){
         << " id: " << detector.idr 
         << " read Aruco: " << detector.ifArucoExist << std::endl;
         
-        drone.currentInfo = detctor;
+        // drone.currentInfo = detctor; NOT WORKING YET!
     }
 }
 void tzokArucoReaderRun(drone &drone){
@@ -42,7 +42,7 @@ void tzokArucoReaderRun(drone &drone){
 int main(){
     drone ourDrone;
     
-    ourDrone.run();
+    // ourDrone.run();
 
     // tzokArucoReaderRun(ourDrone);
 
