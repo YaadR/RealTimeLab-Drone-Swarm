@@ -1,33 +1,49 @@
 #include "drone.h"
 #include "arucoReader"
+#include "arocuLeaderInfo.h"
 
-class drone{
-    private:
-        /* data */
-        int id;
 
-    public:
-        drone(/* args */);
-        ~drone();
+drone::drone(aruco currentInfo){
+	this->currentInfo = currentInfo;
+}
+
+// drone::~drone(){}
+
+aruco drone::get_leader_position(){
+    aruco positionChange;
+    positionChange = arucoReaderRun();
+    return positionChange;
+}
+
+void drone::move_drone(aruco positionChange){
+    int rightDrone = positionChange.rightLeft;
     
-    drone::drone(/* args */){}
-    
-    drone::~drone(){}
-    
-    data get_leader_position(){
-        data positionChange;
-        arucoReaderRun();
-        return positionChange;
+    if (rightDrone >= 0) {
+        /* move to
+        Forward = 1.0;
+        rightLeft = 0.3;
+        upDown = 0;
+        angle = 0;
+        clockwise: 0 ;
+        */
     }
-    void move_drone(data positionChange){
-         
-        return;
+    else {
+        /* move to
+        Forward = 1.37;
+        rightLeft = -0.3;
+        upDown = 0;
+        angle = 0;
+        clockwise = 0 ;
+        */    
     }
 
-    void run(){
-        while (true){
-            move_drone(get_leader_position());
-        }
-    }
-};
-   
+    return;
+}
+
+void drone::run(){
+	/*
+	while (true){
+        	move_drone();
+	}
+    	*/
+}
