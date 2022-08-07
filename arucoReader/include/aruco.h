@@ -32,7 +32,10 @@ public:
     std::pair<int, bool> leftOverAngle{0, false};
     int idr = 0;
     bool ifArucoExist;
-
+    
+    void printAruco();
+    aruco& operator=(const aruco& origin);
+    
 private:
     bool runCamera;
     bool stop;
