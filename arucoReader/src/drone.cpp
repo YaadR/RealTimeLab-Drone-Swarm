@@ -31,9 +31,15 @@ void drone::addInfo(aruco &origin){
 // drone::~drone(){}
 
 void drone::get_leader_position(){
+<<<<<<< Updated upstream
     // aruco positionChange;
     //positionChange = arucoReaderRun();
     // return positionChange;
+=======
+    aruco positionChange;
+    positionChange = arucoReaderRun();
+    return positionChange;
+>>>>>>> Stashed changes
 }
 
 void drone::move_drone(){
@@ -74,8 +80,12 @@ void drone::move_drone(){
 
 void drone::run(){
 	/*
-	while (true){
+    thread1 -> while (true) {
+        get_leader_position()
+        }
+
+    thread2 -> while (true){
         	move_drone();
-	}
+	        }       
     	*/
 }
