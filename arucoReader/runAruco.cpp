@@ -5,10 +5,7 @@
 #include <nlohmann/json.hpp>
 #include <unistd.h>
 #include "aruco.h"
-#include "arocuLeaderInfo.h"
-#include "drone.h"
-
-void runAruco(aruco &detector, drone &drone){
+void runAruco(aruco &detector){
     while(true){
         std::cout << "forward: " << detector.forward 
         << " right left: " << detector.rightLeft 
