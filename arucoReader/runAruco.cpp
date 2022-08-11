@@ -5,20 +5,26 @@
 #include <nlohmann/json.hpp>
 #include <unistd.h>
 #include "aruco.h"
-void runAruco(aruco &detector){
+#include "drone.h"
+
+
+void runAruco(aruco &detector, drone &myDrone){
     while(true){
-        std::cout << "forward: " << detector.forward 
+       /*std::cout 
+        << "forward: " << detector.forward 
         << " right left: " << detector.rightLeft 
         << " updown: " << detector.upDown
         << " angle: " << detector.leftOverAngle.first 
         << " clockwise: " << detector.leftOverAngle.second 
         << " id: " << detector.idr 
-        << " read Aruco: " << detector.ifArucoExist << std::endl;
+        << " read Aruco: " << detector.ifArucoExist
+        << std::endl;*/
         
-        // drone.currentInfo = detctor; NOT WORKING YET!
+        myDrone.addInfo(detector);
+        myDrone.move_drone();
     }
 }
-void tzokArucoReaderRun(drone &drone){
+void tzokArucoReaderRun(drone &myDrone){
     std::ifstream programData("../config.json");
     nlohmann::json data;
     programData >> data;
@@ -28,22 +34,19 @@ void tzokArucoReaderRun(drone &drone){
     float currentMarkerSize = data["currentMarkerSize"];
     if (isCameraString){
         std::string cameraString = data["cameraString"];
-        aruco detector(yamlCalibrationPath,cameraString,currentMarkerSize); 
+        aruco detector(yamlCalibrationPath,cameraString,currentMarkerSize);
+    	runAruco(detector, myDrone);
     }else{
         int cameraPort = data["cameraPort"];
         aruco detector(yamlCalibrationPath,cameraPort,currentMarkerSize);
+    	runAruco(detector, myDrone);
     }
-    runAruco(detector , drone);
+    
+    
 }
-
 int main(){
     drone ourDrone;
     
-    // ourDrone.run();
-
-    // tzokArucoReaderRun(ourDrone);
-
-    // ourDrone.currentInfo.printAruco();
-
+    tzokArucoReaderRun(ourDrone);
     return 0;
 }
