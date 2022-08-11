@@ -9,14 +9,15 @@ class drone{
         double rightLeft ;
         int idr ;
         bool ifArucoExist ;
-        //std::pair<int, bool> leftOverAngel ;
+       	bool clockwise;
+       	int angle;
         bool runCamera ;
         // std::vector<arocuLeaderInfo> targetsList;
 
     public:
-        drone(aruco currentInfo);
+        drone();
         // ~drone();
-   
+ 	void addInfo(aruco &aruco);
         void get_leader_position();
         void move_drone();
         void run();
