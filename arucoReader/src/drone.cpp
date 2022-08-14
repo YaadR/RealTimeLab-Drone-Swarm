@@ -5,9 +5,9 @@
 // #include "arocuLeaderInfo.h"
 
 
-drone::drone(){
-	
-}
+drone::drone(){}
+
+drone::~drone(){}
 
 void drone::addInfo(aruco &origin){
 	this->upDown = origin.upDown;
@@ -28,18 +28,10 @@ void drone::addInfo(aruco &origin){
         << std::endl;*/
 }
 
-// drone::~drone(){}
-
 void drone::get_leader_position(){
-<<<<<<< Updated upstream
-    // aruco positionChange;
-    //positionChange = arucoReaderRun();
-    // return positionChange;
-=======
     aruco positionChange;
     positionChange = arucoReaderRun();
     return positionChange;
->>>>>>> Stashed changes
 }
 
 void drone::move_drone(){
@@ -79,11 +71,15 @@ void drone::move_drone(){
 }
 
 void drone::run(){
-	/*
-    thread1 -> while (true) {
-        get_leader_position()
+	
+    while (true) {
+        get_leader_position();
+        move_drone();
         }
-
+    /*
+    thread1 -> while (true) {
+        get_leader_position();
+        }
     thread2 -> while (true){
         	move_drone();
 	        }       

@@ -9,14 +9,14 @@ private:
     double: angel;
     bool clockwise;
 public:
-    data(/* args */);
-    ~data();
+    arocuLeaderInfo(/* args */);
+    ~arocuLeaderInfo();
 };
 
-data::data(/* args */)
+arocuLeaderInfo::arocuLeaderInfo(/* args */)
 {
 }
 
-data::~data()
+arocuLeaderInfo::~arocuLeaderInfo()
 {
 }
