@@ -1,9 +1,12 @@
 #include "aruco.h"
+#include "arocuLeaderInfo.h"
 
 class drone{
     private:
         int id;
-        // aruco currentInfo;
+        aruco origin;
+        arocuLeaderInfo currentInfo;
+        
         double upDown ;
         double forward ;
         double rightLeft ;
@@ -15,10 +18,11 @@ class drone{
         // std::vector<arocuLeaderInfo> targetsList;
 
     public:
-        drone();
-        // ~drone();
- 	void addInfo(aruco &aruco);
-        void get_leader_position();
-        void move_drone();
-        void run();
+    drone();
+    ~drone();
+    void calculate_info_to_RC();
+ 	void add_info(aruco &aruco);
+    void get_leader_position();
+    void move_drone();
+    void run();
 };

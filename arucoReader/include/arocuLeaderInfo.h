@@ -3,12 +3,16 @@
 class arocuLeaderInfo
 {
 private:
-    double: forward;
-    double: rightleft;
-    double: updown;
-    double: angel;
+    double upDown ;
+    double forward ;
+    double rightLeft ;
+    int idr ;
+    bool ifArucoExist ;
     bool clockwise;
+    int angle;
+    bool runCamera ;
 public:
+    
     arocuLeaderInfo(/* args */);
     ~arocuLeaderInfo();
 };
