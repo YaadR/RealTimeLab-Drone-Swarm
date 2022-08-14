@@ -7,21 +7,21 @@
 #include <iostream>
 
 aruco& operator= (const aruco &origin){
-    this->upDown = origin.upDown;
-    this->forward = origin.forward;
-    this->rightLeft = origin.rightLeft;
-    this->idr = origin.idr;
-    this->ifArucoExist = origin.ifArucoExist;
+    this-> upDown = origin.upDown;
+    this-> forward = origin.forward;
+    this-> rightLeft = origin.rightLeft;
+    this-> idr = origin.idr;
+    this-> ifArucoExist = origin.ifArucoExist;
     this-> leftOverAngel = origin.leftOverAngle;
-    this->runCamera = origin.runCamera;
+    this-> runCamera = origin.runCamera;
     return *this;
 }
 
 void aruco::printAruco (){
-    std::cout<<forward<<" , "<<rightLeft<<" , "
-    <<upDown<<" , "<<leftOverAngle.first<<" , "
-    <<leftOverAngle.second<<" , "<<idr<<" , "
-    <<ifArucoExist<< std::endl;
+    std::cout << forward << " , " << rightLeft << " , "
+    << upDown << " , " << leftOverAngle.first << " , "
+    << leftOverAngle.second << " , " << idr << " , "
+    << ifArucoExist << std::endl;
 }        
 
 std::vector<cv::Mat> aruco::getCameraCalibration(const std::string &path) {

@@ -6,9 +6,10 @@
 #include <unistd.h>
 #include "aruco.h"
 #include "drone.h"
+#include "arocuLeaderInfo.h"
 
 
-void runAruco(aruco &detector, drone &myDrone){
+void print_aruco_polling_output(aruco &detector, drone &myDrone){       //debug function
     while(true){
        /*std::cout 
         << "forward: " << detector.forward 
@@ -20,7 +21,7 @@ void runAruco(aruco &detector, drone &myDrone){
         << " read Aruco: " << detector.ifArucoExist
         << std::endl;*/
         
-        myDrone.addInfo(detector);
+        myDrone.add_info(detector);
         myDrone.move_drone();
     }
 }
@@ -35,18 +36,16 @@ void tzokArucoReaderRun(drone &myDrone){
     if (isCameraString){
         std::string cameraString = data["cameraString"];
         aruco detector(yamlCalibrationPath,cameraString,currentMarkerSize);
-    	runAruco(detector, myDrone);
     }else{
         int cameraPort = data["cameraPort"];
         aruco detector(yamlCalibrationPath,cameraPort,currentMarkerSize);
-    	runAruco(detector, myDrone);
     }
-    
-    
+    print_aruco_polling_output(detector, myDrone);    //printing func
 }
+
 int main(){
     drone ourDrone;
-    
-    tzokArucoReaderRun(ourDrone);
+    ourDrone.run();
+    //tzokArucoReaderRun(ourDrone);
     return 0;
 }

@@ -1,15 +1,18 @@
 #include <unistd.h>
 #include "drone.h"
 #include <iostream>
-// #include "arucoReader"
-// #include "arocuLeaderInfo.h"
+#include "arocuLeaderInfo.h"
 
 
 drone::drone(){}
 
 drone::~drone(){}
 
-void drone::addInfo(aruco &origin){
+void drone::calculate_info_to_RC(){
+    
+}
+
+void drone::add_info(aruco &origin){
 	this->upDown = origin.upDown;
     	this->forward = origin.forward;
     	this->rightLeft = origin.rightLeft;
