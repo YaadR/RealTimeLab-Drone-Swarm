@@ -8,11 +8,11 @@
 #include "drone.h"
 #include <thread>
 
-void runAruco(aruco &detector, drone *myDrone){
+void print_aruco_info(aruco &detector, drone *myDrone){
         while(detector.ifArucoExist != 1){
         	std::cout << "waiting for aruco" << std::endl;
         }
-	if(detector.rightLeft < 0)
+	if(detector.rightLeft < 0)                          //added to set_id function
         	myDrone->setRightOrLeft(0); // left drone
         else
         	myDrone->setRightOrLeft(1); // right drone
@@ -44,26 +44,33 @@ void tzukArucoReaderRun(drone *myDrone){
     float currentMarkerSize = data["currentMarkerSize"];
     if (isCameraString){
         std::string cameraString = data["cameraString"];
-        aruco detector(yamlCalibrationPath,cameraString,currentMarkerSize);
-    	runAruco(detector, myDrone);
+        aruco detector(yamlCalibrationPath,cameraString,currentMarkerSize, myDrone);
+        myDrone->ourAruco = detector;
+    	print_aruco_info(detector, myDrone);                        //only use for debug the aruco
     }else{
         int cameraPort = data["cameraPort"];
-        aruco detector(yamlCalibrationPath,cameraPort,currentMarkerSize);
-    	runAruco(detector, myDrone);
+        aruco detector(yamlCalibrationPath,cameraPort,currentMarkerSize, myDrone);
+        myDrone->ourAruco = detector;
+    	print_aruco_info(detector, myDrone);                        //only use for debug the aruco
     }
 }
 /*void run(drone *myDrone){
 	myDrone->runDrone();
 }*/
+
 int main(){
 	system("v4l2 -d /dev/video0 focus_auto=0");
-    	drone ourDrone;
-    	tzukArucoReaderRun(&ourDrone);
-    	/*std::thread th1(tzukArucoReaderRun, &ourDrone);
-    	std::thread th2(run, &ourDrone);
-    
-    	th1.join();
-    	th2.join();*/
+    drone ourDrone;
+    ourDrone.runDrone();
+    // tzukArucoReaderRun(&ourDrone);
+
+
+
+    /*std::thread th1(tzukArucoReaderRun, &ourDrone);
+    std::thread th2(run, &ourDrone);
+
+    th1.join();
+    th2.join();*/
     	
     return 0;
 }

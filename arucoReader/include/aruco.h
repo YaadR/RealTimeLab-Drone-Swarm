@@ -14,11 +14,11 @@
 
 class aruco {
 public:
-    aruco(std::string &yamlCalibrationPath, int cameraPort, float currentMarkerSize);
+    aruco(std::string &yamlCalibrationPath, int cameraPort, float currentMarkerSize, drone *myDrone);
 
     ~aruco();
 
-    aruco(std::string &yamlCalibrationPath, std::string &cameraString, float currentMarkerSize);
+    aruco(std::string &yamlCalibrationPath, std::string &cameraString, float currentMarkerSize, drone *myDrone);
 
     void setHoldCamera(bool value) { *holdCamera = value; };
 
@@ -33,9 +33,11 @@ public:
     int idr = 0;
     bool ifArucoExist;
     
-    void printAruco();
-    aruco& operator=(const aruco& origin);
-    
+    void print_aruco();                          //for gebug
+    aruco& operator=(const aruco& origin);      //for set info in info class at specific drone
+    bool get_id();
+    std::vector<float> get_info();
+
 private:
     bool runCamera;
     bool stop;

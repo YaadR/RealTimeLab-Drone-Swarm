@@ -1,6 +1,8 @@
 #include <unistd.h>
 #include "drone.h"
 #include <iostream>
+#include "runAruco"
+
 // #include "arucoReader"
 // #include "arocuLeaderInfo.h"
 
@@ -15,16 +17,15 @@ float  ROTATE_RANGE=0.1;
 int ARUCO_DATA_SIZE=7;
 /*@Ye*/
 
-
 drone::drone(){
 	
 }
 
-void drone::setRightOrLeft(int i){
+void drone::setRightOrLeft(int i){          //check if still relevant    
 	this->RightOrLeft = i;
 }
 
-double drone::getRightLeft(aruco &detector){
+double drone::getRightLeft(aruco &detector){    //check if still relevant
 	return detector.rightLeft;
 }
 
@@ -53,10 +54,15 @@ void drone::addInfo(aruco &origin){
 
 // drone::~drone(){}
 
-void drone::get_leader_position(){
-    // aruco positionChange;
-    //positionChange = arucoReaderRun();
-    // return positionChange;
+std::vector <auto> drone::get_leader_position(){
+    return this->ourAruco->get_info();
+}
+
+void drone::set_info(std::vector <auto> rawInfo){
+    this->rightLeft = rawInfo[0];//.rightLeft;                      //need to make enum
+    this->forward = rawInfo[1];//.forward;
+    this->upDown = rawInfo[2];//.upDown;
+    this->angle = rawInfo[3];//.leftOverAngle.first;
 }
 
 void drone::move_drone(){
@@ -123,11 +129,24 @@ void drone::move_drone(){
     return;
 }
 
+void set_id(int id){
+    if(id < 0)                         
+        	myDrone->id = 0; // left drone
+        else
+        	myDrone->id = 1; // right drone
+}
+
 void drone::runDrone(/*aruco &origin*/){
-		while(true){
-			
-			//move_drone();
+		tzukArucoReaderRun(this);
+        this.set_id(ourAruco.get_id());
+
+        //implement multi thread        
+        while(true){
+			this->set_info(this.get_leader_position());
+            this.move_drone();
 		}
+
+
 		/*std::thread th1(addInfo, ourDrone);
     		std::thread th2(move_drone, ourDrone);
     

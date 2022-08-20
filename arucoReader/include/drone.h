@@ -23,33 +23,44 @@
 
 class drone{
     private:
-        int id;
-        // aruco currentInfo;
-        double upDown ;
-        double forward ;
-        double rightLeft ;
-        int idr ;
-        bool ifArucoExist ;
-       	bool clockwise;
-       	int angle;
-        bool runCamera ;
-        bool RightOrLeft;
-        // std::vector<arocuLeaderInfo> targetsList;
+        enum{left, right} id;
+
+        /*raw info from aruco*/
+        float rightLeft ;               //for each vector
+        float forward ;                 //for each vector
+        float upDown ;                  //for each vector
+       	int angle;                      //for each vector
+
+        bool ifArucoExist ;             //necessary only for raw info 
+
+        //std::vector <auto> rawInfo = {rightLeft, forward, upDown, angle , ifArucoExist};  //to implement later
+
+        int idr ;                   //check if still relevant
+       	bool clockwise;             //check if still relevant
+        bool runCamera ;            //check if still relevant
+        bool RightOrLeft;           //check if still relevant
+
+        static std::vector <float> relativePositionRight = {0,0,0,0};   //need to check syntax
+        static std::vector <float> relativePositionLeft = {0,0,0,0};    //need to check syntax
+
+        aruco* ourAruco;
 
     public:
         drone();
         // ~drone();
- 	void addInfo(aruco &aruco);
-        void get_leader_position();
+        void set_id(int id);
+        void set_info(std::vector <auto> rawInfo);
+ 	    void addInfo(aruco &aruco);
+        std::vector <auto> get_leader_position();
         void move_drone();
         void runDrone();
-        void setRightOrLeft(int i);
+        void setRightOrLeft(int i);         //check if still relevant
         bool getRightOrLeft();
         double getRightLeft(aruco &detector);
 		/////////////// Logic implamentation from here //////////////////
 	//std::vector<double> datAruco(aruco &detector){    };
 
-	 void move_to(float *v_data);
+	    void move_to(float *v_data);
 	/*
 	v_data[0] = forward
 	v_data[1] = rightLeft
