@@ -8,13 +8,12 @@
 // #include "arocuLeaderInfo.h"
 
 /*@Y*/
-float MAX_DIST=1.5;
-float MIN_DIST=0.4;
-float  MAX_LEFT_RIGHT=1;
-float  MIN_LEFT_RIGHT=0.1;
-float  UP_DOWN_RANGE=0.4;
-float  YAW_RANGE=35;
-float  ROTATE_RANGE=0.1;
+float MAX_DIST=1.2;
+float MIN_DIST=0.8;
+float  MAX_LEFT_RIGHT=0.8;
+float  MIN_LEFT_RIGHT=0.2;
+float  UP_DOWN_RANGE=0.3;
+float  YAW_RANGE=25;
 int ARUCO_DATA_SIZE=14;
 /*@Ye*/
 
@@ -50,7 +49,7 @@ void drone::addInfo(aruco &origin){
         << " updown: " << this->upDown
         << " id: " << this->idr 
         << " read Aruco: " << this->ifArucoExist
-        << std::endl;*/
+        << std::endl;/**/
 }
 
 // drone::~drone(){}
@@ -99,16 +98,16 @@ std::string drone::move_drone(){
 	*/
     //int flags[ARUCO_DATA_SIZE] = {0}; 
     std::string flags = "rc +0 +0 +0 +0"; // "rc Left/Right Forward/Backward Up/Down Yaw"
-	
+	/**/
     if(v_data[6]){
         if(v_data[0]<MIN_DIST || v_data[0]>MAX_DIST){
             if(v_data[0]<MIN_DIST){
-                std::cout << "Move Backward" << std::endl;
+                //std::cout << "Move Backward" << std::endl;
                 flags[7]='5';
                 flags[6]='-';
                 
             }else{
-                std::cout << "Move Forward" << std::endl;
+                //std::cout << "Move Forward" << std::endl;
                 flags[7]='5';
             }
         }
@@ -117,20 +116,20 @@ std::string drone::move_drone(){
             switch((int)v_data[5]%2){        // Even -> 0 -> Left || Odd -> 1 -> Right
                 case 0:
                     if(v_data[1]<-MAX_LEFT_RIGHT){
-                        std::cout << "Move Right" << std::endl;
+                        //std::cout << "Move Right" << std::endl;
                         flags[4]= '5';
                     }else{
-                        std::cout << "Move Left" << std::endl;
+                        //std::cout << "Move Left" << std::endl;
                         flags[4]= '5';
                         flags[3]='-';
                     }                  
                     break;
                 case 1:
                     if(v_data[1]<MIN_LEFT_RIGHT){
-                        std::cout << "Move Right" << std::endl;
+                        //std::cout << "Move Right" << std::endl;
                         flags[4]= '5';
                     }else{
-                        std::cout << "Move Left" << std::endl;
+                        //std::cout << "Move Left" << std::endl;
                         flags[4]= '5';
                         flags[3]='-';
                     }                 
@@ -145,11 +144,11 @@ std::string drone::move_drone(){
         {
             if(v_data[2]>UP_DOWN_RANGE)
             {
-                std::cout << "Move Down" << std::endl;
+                //std::cout << "Move Down" << std::endl;
                 flags[9]='-';
                 flags[10]='5';
             }else{
-                std::cout << "Move Up" << std::endl;
+                //std::cout << "Move Up" << std::endl;
                 flags[10]='5';
             }
         }
@@ -157,10 +156,10 @@ std::string drone::move_drone(){
         if(abs(v_data[3])>YAW_RANGE)
         {
             if(v_data[3]>YAW_RANGE){
-                std::cout << "Yaw right" << std::endl;
+                //std::cout << "Yaw right" << std::endl;
                 flags[13]='5';
             }else{
-                std::cout << "Yaw left" << std::endl;
+                //std::cout << "Yaw left" << std::endl;
                 flags[12]='-';
                 flags[13]='5';
             }
@@ -168,7 +167,7 @@ std::string drone::move_drone(){
 
     }else{
     	std::cout<< "waiting for data" << std::endl;
-    }
+    }/**/
     std::cout << flags << std::endl;
     //tello.SendCommand(flags)
     return flags;
@@ -217,8 +216,8 @@ std::string drone::move_drone(){
         else
         	myDrone->id = 1; // right drone
 }*/
-
-void drone::runDrone(/*aruco &origin*/){
+/*
+void drone::runDrone(/*aruco &origin){
 		//tzukArucoReaderRun(this);
         //this.set_id(ourAruco.get_id());
 
@@ -236,8 +235,8 @@ void drone::runDrone(/*aruco &origin*/){
     		th2.join();*/
 	
     	
-}
-
+/*}
+*/
 
 
 /////////// Logic implamentation from here /////////////////
