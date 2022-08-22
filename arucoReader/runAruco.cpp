@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <ctello.h>
+#include <string.h>
 /*@Ye*/
 
 
@@ -38,12 +39,24 @@ void keepAlive(ctello::Tello &tello){
         sleep(10);
 	}
 }
+
+char keepBreathing(char sign, ctello::Tello &tello){ // Added this function inteed of keepAlive(ctello::Tello &tello) for simplicity
+	std::string rc = "rc +0 +0 +5 +0";
+	rc[9]=sign;
+	tello.SendCommand(rc);
+	std::cout << rc << std::endl;
+	return sign=='+'?'-':'+';
+	
+}
 /*Tello part end*/
 
 void runAruco(aruco &detector, drone *myDrone, ctello::Tello &tello){
-
+	
+        char sign = '+';
+        
         while(detector.ifArucoExist != 1){
         	std::cout << "waiting for aruco" << std::endl;
+        	sign = keepBreathing(sign,std::ref(tello));
         	
 	}
 	sleep(1);
@@ -51,12 +64,15 @@ void runAruco(aruco &detector, drone *myDrone, ctello::Tello &tello){
         	myDrone->setRightOrLeft(0); // left drone
         else
         	myDrone->setRightOrLeft(1); // right drone
-    	
     while(true){
 	
         myDrone->addInfo(detector);
         tello.SendCommand(myDrone->move_drone());
-        std::cout << myDrone->getRightOrLeft() << std::endl;
+        sign = keepBreathing(sign,std::ref(tello));
+        //std::cout << myDrone->getRightOrLeft() << std::endl;
+
+        
+        
     }
 }/*
 void tzukArucoReaderRun(drone *myDrone){
