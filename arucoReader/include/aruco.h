@@ -14,11 +14,11 @@
 
 class aruco {
 public:
-    aruco(std::string &yamlCalibrationPath, int cameraPort, float currentMarkerSize, drone *myDrone);
+    aruco(std::string &yamlCalibrationPath, int cameraPort, float currentMarkerSize/*, drone *myDrone*/);
 
     ~aruco();
 
-    aruco(std::string &yamlCalibrationPath, std::string &cameraString, float currentMarkerSize, drone *myDrone);
+    aruco(std::string &yamlCalibrationPath, std::string &cameraString, float currentMarkerSize/*, drone *myDrone*/);
 
     void setHoldCamera(bool value) { *holdCamera = value; };
 

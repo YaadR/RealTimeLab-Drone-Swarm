@@ -10,6 +10,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <cstdlib>
+#include <string.h>
 /*
 #define MAX_DIST 1.2;
 #define MIN_DIST 0.8;
@@ -40,8 +41,8 @@ class drone{
         bool runCamera ;            //check if still relevant
         bool RightOrLeft;           //check if still relevant
 
-        static std::vector <float> relativePositionRight = {0,0,0,0};   //need to check syntax
-        static std::vector <float> relativePositionLeft = {0,0,0,0};    //need to check syntax
+        //static std::vector <float> relativePositionRight = {0,0,0,0};   //need to check syntax
+        //static std::vector <float> relativePositionLeft = {0,0,0,0};    //need to check syntax
 
         aruco* ourAruco;
 
@@ -49,10 +50,10 @@ class drone{
         drone();
         // ~drone();
         void set_id(int id);
-        void set_info(std::vector <auto> rawInfo);
- 	    void addInfo(aruco &aruco);
-        std::vector <auto> get_leader_position();
-        void move_drone();
+        // void set_info(std::vector <auto> rawInfo);
+ 	void addInfo(aruco &aruco);
+        //std::vector <auto> get_leader_position();
+        std::string move_drone();
         void runDrone();
         void setRightOrLeft(int i);         //check if still relevant
         bool getRightOrLeft();
@@ -60,7 +61,7 @@ class drone{
 		/////////////// Logic implamentation from here //////////////////
 	//std::vector<double> datAruco(aruco &detector){    };
 
-	    void move_to(float *v_data);
+	    //void move_to(float *v_data);
 	/*
 	v_data[0] = forward
 	v_data[1] = rightLeft
