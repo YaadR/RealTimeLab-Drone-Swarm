@@ -7,7 +7,7 @@
 #include <iostream>
 #include "drone.h"
 
-aruco& operator= (const aruco &origin){
+/*aruco& operator= (const aruco &origin){
     this-> upDown = origin.upDown;
     this-> forward = origin.forward;
     this-> rightLeft = origin.rightLeft;
@@ -16,7 +16,7 @@ aruco& operator= (const aruco &origin){
     this-> leftOverAngel = origin.leftOverAngle;
     this-> runCamera = origin.runCamera;
     return *this;
-}
+}*/
 
 void aruco::print_aruco (){
     std::cout << forward << " , " 
@@ -87,6 +87,8 @@ void aruco::trackMarkerThread() {
         std::vector<int> ids;
         if (frame && !frame->empty()) {
             cv::aruco::detectMarkers(*frame, dictionary, corners, ids);
+            cv::imshow("aruco", *frame);
+            cv::waitKey(1);
         } else {
             std::cout << "no frames" << std::endl;
             sleep(1);
@@ -172,12 +174,12 @@ void aruco::getCameraFeed() {
             continue;
         }
         capture->read(*frame);
-        cv::imshow("aruco", *frame);
-        cv::waitKey(1);
+        //cv::imshow("aruco", *frame);
+       // cv::waitKey(1);
     }
 }
 
-aruco::aruco(std::string &yamlCalibrationPath, int cameraPort, float currentMarkerSize, drone *myDrone) {
+aruco::aruco(std::string &yamlCalibrationPath, int cameraPort, float currentMarkerSize/*, drone *myDrone*/) {
     this->yamlCalibrationPath = yamlCalibrationPath;
     stop = false;
     holdCamera = std::make_shared<bool>(false);
@@ -191,10 +193,10 @@ aruco::aruco(std::string &yamlCalibrationPath, int cameraPort, float currentMark
     this->currentMarkerSize = currentMarkerSize;
     cameraThread = std::move(std::thread(&aruco::getCameraFeed, this));
     arucoThread = std::move(std::thread(&aruco::trackMarkerThread, this));
-    set_id(myDrone);
+    //set_id(myDrone);
 }
 
-aruco::aruco(std::string &yamlCalibrationPath, std::string &cameraString, float currentMarkerSize, drone *myDrone) {
+aruco::aruco(std::string &yamlCalibrationPath, std::string &cameraString, float currentMarkerSize/*, drone *myDrone*/) {
     this->yamlCalibrationPath = yamlCalibrationPath;
     stop = false;
     holdCamera = std::make_shared<bool>(false);
@@ -204,7 +206,7 @@ aruco::aruco(std::string &yamlCalibrationPath, std::string &cameraString, float 
     this->currentMarkerSize = currentMarkerSize;
     cameraThread = std::move(std::thread(&aruco::getCameraFeed, this));
     arucoThread = std::move(std::thread(&aruco::trackMarkerThread, this));
-    set_id(myDrone);
+    //set_id(myDrone);
 }
 
 aruco::~aruco() {
