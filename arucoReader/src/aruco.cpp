@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include "../include/aruco.h"
 #include <iostream>
-#include "drone.h"
+//#include "drone.h"
 
 /*aruco& operator= (const aruco &origin){
     this-> upDown = origin.upDown;
@@ -83,10 +83,15 @@ void aruco::trackMarkerThread() {
     const std::vector<cv::Mat> cameraParams = getCameraCalibration(yamlCalibrationPath);
     const cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(
             cv::aruco::DICT_ARUCO_ORIGINAL);
+    cv::Mat imageCopy;
     while (!stop) {
         std::vector<int> ids;
         if (frame && !frame->empty()) {
             cv::aruco::detectMarkers(*frame, dictionary, corners, ids);
+            //(*frame).copyTo(imageCopy);
+            //cv::aruco::drawDetectedMarkers(imageCopy, corners, ids);
+		
+		
             cv::imshow("aruco", *frame);
             cv::waitKey(1);
         } else {
@@ -114,9 +119,14 @@ void aruco::trackMarkerThread() {
         // if at least one marker detected
         if (canContinue) {
             std::vector<cv::Vec3d> localRvecs, localTvecs;
-            cv::aruco::estimatePoseSingleMarkers(corners, currentMarkerSize, cameraParams[0], cameraParams[1],
+            /*cv::aruco::estimatePoseSingleMarkers(corners, currentMarkerSize, cameraParams[0], cameraParams[1],
                                                  localRvecs,
-                                                 localTvecs);
+                                                 localTvecs);*/
+                                                 
+            /*for(int i = 0; i <ids.size(); i++){
+                	cv::drawFrameAxes(imageCopy, cameraParams[0], cameraParams[1], localRvecs[i], 		localTvecs[i], 0.1);
+                }*/
+                
             if (!localRvecs.empty()) {
                 cv::Mat rmat = cv::Mat::eye(3, 3, CV_64FC1);
                 try {
@@ -174,12 +184,11 @@ void aruco::getCameraFeed() {
             continue;
         }
         capture->read(*frame);
-        //cv::imshow("aruco", *frame);
-       // cv::waitKey(1);
+	
     }
 }
 
-aruco::aruco(std::string &yamlCalibrationPath, int cameraPort, float currentMarkerSize/*, drone *myDrone*/) {
+aruco::aruco(std::string &yamlCalibrationPath, int cameraPort, float currentMarkerSize) {
     this->yamlCalibrationPath = yamlCalibrationPath;
     stop = false;
     holdCamera = std::make_shared<bool>(false);
@@ -193,10 +202,9 @@ aruco::aruco(std::string &yamlCalibrationPath, int cameraPort, float currentMark
     this->currentMarkerSize = currentMarkerSize;
     cameraThread = std::move(std::thread(&aruco::getCameraFeed, this));
     arucoThread = std::move(std::thread(&aruco::trackMarkerThread, this));
-    //set_id(myDrone);
 }
 
-aruco::aruco(std::string &yamlCalibrationPath, std::string &cameraString, float currentMarkerSize/*, drone *myDrone*/) {
+aruco::aruco(std::string &yamlCalibrationPath, std::string &cameraString, float currentMarkerSize) {
     this->yamlCalibrationPath = yamlCalibrationPath;
     stop = false;
     holdCamera = std::make_shared<bool>(false);
@@ -206,7 +214,6 @@ aruco::aruco(std::string &yamlCalibrationPath, std::string &cameraString, float 
     this->currentMarkerSize = currentMarkerSize;
     cameraThread = std::move(std::thread(&aruco::getCameraFeed, this));
     arucoThread = std::move(std::thread(&aruco::trackMarkerThread, this));
-    //set_id(myDrone);
 }
 
 aruco::~aruco() {
