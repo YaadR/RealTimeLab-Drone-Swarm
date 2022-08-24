@@ -1,41 +1,6 @@
-//
-// Created by tzuk on 6/6/22.
-//
 
 #include <unistd.h>
 #include "../include/aruco.h"
-#include <iostream>
-//#include "drone.h"
-
-/*aruco& operator= (const aruco &origin){
-    this-> upDown = origin.upDown;
-    this-> forward = origin.forward;
-    this-> rightLeft = origin.rightLeft;
-    this-> idr = origin.idr;
-    this-> ifArucoExist = origin.ifArucoExist;
-    this-> leftOverAngel = origin.leftOverAngle;
-    this-> runCamera = origin.runCamera;
-    return *this;
-}*/
-
-void aruco::print_aruco (){
-    std::cout << forward << " , " 
-    << rightLeft << " , "
-    << upDown << " , " 
-    << leftOverAngle.first << " , "
-    << leftOverAngle.second << " , " 
-    << idr << " , "
-    << ifArucoExist << std::endl;
-}        
-
-std::vector<float> aruco::get_info(){
-    std::vector<float> currentInfo;
-    currentInfo.push_back(this-> rightLeft);
-    currentInfo.push_back(this-> forward);
-    currentInfo.push_back(this-> upDown);
-    currentInfo.push_back(this-> leftOverAngle.first);
-    return currentInfo;
-}
 
 std::vector<cv::Mat> aruco::getCameraCalibration(const std::string &path) {
     cv::FileStorage fs(path, cv::FileStorage::READ);
@@ -82,18 +47,20 @@ void aruco::trackMarkerThread() {
     std::vector<std::vector<cv::Point2f>> corners;
     const std::vector<cv::Mat> cameraParams = getCameraCalibration(yamlCalibrationPath);
     const cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(
-            cv::aruco::DICT_ARUCO_ORIGINAL);
+            cv::aruco::DICT_ARUCO_ORIGINAL/*DICT_4X4_100*/);
+            
     cv::Mat imageCopy;
     while (!stop) {
         std::vector<int> ids;
         if (frame && !frame->empty()) {
             cv::aruco::detectMarkers(*frame, dictionary, corners, ids);
-            //(*frame).copyTo(imageCopy);
-            //cv::aruco::drawDetectedMarkers(imageCopy, corners, ids);
-		
-		
-            cv::imshow("aruco", *frame);
-            cv::waitKey(1);
+            (*frame).copyTo(imageCopy);
+            
+            
+            cv::aruco::drawDetectedMarkers(imageCopy, corners, ids);
+            //cv::imshow("aruco", imageCopy);
+            
+        
         } else {
             std::cout << "no frames" << std::endl;
             sleep(1);
@@ -101,14 +68,15 @@ void aruco::trackMarkerThread() {
         }
         bool canContinue = true;
         int rightId = 0;
+        
         if(ids.size() == 1)
             idr = ids[0];
-        
+            
         if(ids.size() == 0)
             ifArucoExist = false;
         else
             ifArucoExist = true;
-        
+            
         /*while (rightId < ids.size()) {
             if (ids[rightId] != 0) {
                 canContinue = true;
@@ -118,37 +86,43 @@ void aruco::trackMarkerThread() {
         }*/
         // if at least one marker detected
         if (canContinue) {
-            std::vector<cv::Vec3d> localRvecs, localTvecs;
-            /*cv::aruco::estimatePoseSingleMarkers(corners, currentMarkerSize, cameraParams[0], cameraParams[1],
-                                                 localRvecs,
-                                                 localTvecs);*/
-                                                 
-            /*for(int i = 0; i <ids.size(); i++){
-                	cv::drawFrameAxes(imageCopy, cameraParams[0], cameraParams[1], localRvecs[i], 		localTvecs[i], 0.1);
-                }*/
+        
+
+		std::vector<cv::Vec3d> localRvecs, localTvecs;
+            	cv::aruco::estimatePoseSingleMarkers(corners, currentMarkerSize, cameraParams[0], cameraParams[1],
+                localRvecs,
+                localTvecs);
                 
-            if (!localRvecs.empty()) {
-                cv::Mat rmat = cv::Mat::eye(3, 3, CV_64FC1);
+            	for(int i = 0; i < ids.size(); i++){
+                	cv::drawFrameAxes(imageCopy, cameraParams[0], cameraParams[1], localRvecs[i], localTvecs[i], 0.1);
+                }
+            	cv::imshow("aruco", imageCopy);
+	    	cv::waitKey(1);
+            
+            	if (!localRvecs.empty()) {
+                	cv::Mat rmat = cv::Mat::eye(3, 3, CV_64FC1);
                 try {
                     cv::Rodrigues(localRvecs[rightId], rmat);
-                } catch (...) {
+                }
+                catch (...) {
                     std::cout << "coudlnot convert vector to mat" << std::endl;
                     continue;
                 }
                 auto t = cv::Mat(-rmat.t() * cv::Mat(localTvecs[rightId]));
-                rightLeft = t.at<double>(0);
-                upDown = t.at<double>(1);
-                forward = t.at<double>(2);
+                rightLeft = t.at<double>(0) * 100;
+                upDown = t.at<double>(1) * 100;
+                forward = t.at<double>(2) * 100;
+                
                 leftOverAngle = getLeftOverAngleFromRotationVector(localRvecs[rightId]);
-                usleep(amountOfUSleepForTrackMarker);
-            } else {
-                std::cout << "couldnt get R vector" << std::endl;
+                usleep(amountOfUSleepForTrackMarker);    
+            }else {
+               std::cout << "couldnt get R vector" << std::endl;
             }
-        } else {
-            std::cout << "didnt detect marker" << std::endl;
-        }
+          }
+            
+        
         // usleep(100000);
-    }
+   } 
 }
 
 void aruco::getEulerAngles(cv::Mat &rotCameraMatrix, cv::Vec3d &eulerAngles) {
@@ -184,7 +158,6 @@ void aruco::getCameraFeed() {
             continue;
         }
         capture->read(*frame);
-	
     }
 }
 
@@ -210,10 +183,11 @@ aruco::aruco(std::string &yamlCalibrationPath, std::string &cameraString, float 
     holdCamera = std::make_shared<bool>(false);
     frame = std::make_shared<cv::Mat>();
     capture = std::make_shared<cv::VideoCapture>();
-    capture->open(cameraString, cv::CAP_FFMPEG);
+    capture->open(cameraString);
     this->currentMarkerSize = currentMarkerSize;
     cameraThread = std::move(std::thread(&aruco::getCameraFeed, this));
     arucoThread = std::move(std::thread(&aruco::trackMarkerThread, this));
+
 }
 
 aruco::~aruco() {
