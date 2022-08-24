@@ -31,13 +31,13 @@ public:
     double rightLeft = 0.0;
     std::pair<int, bool> leftOverAngle{0, false};
     int idr = 0;
-    bool ifArucoExist;
+    bool ifArucoExist = false;
     
     void print_aruco();                          //for gebug
     aruco& operator=(const aruco& origin);      //for set info in info class at specific drone
     bool get_id();
     std::vector<float> get_info();
-
+	
 private:
     bool runCamera;
     bool stop;
@@ -49,7 +49,7 @@ private:
     std::shared_ptr<bool> holdCamera;
     std::shared_ptr<cv::VideoCapture> capture;
 
-    long amountOfUSleepForTrackMarker = 5000;
+    long amountOfUSleepForTrackMarker = 100;
 
 
     std::vector<cv::Mat> getCameraCalibration(const std::string &path);
