@@ -21,9 +21,10 @@
 
 
 /*Tello part*/
-std::shared_ptr<cv::VideoCapture> capture;
-std::shared_ptr<cv::Mat> frame;
-std::shared_ptr<bool> stop;
+//std::shared_ptr<cv::VideoCapture> capture;
+//std::shared_ptr<cv::Mat> frame;
+//std::shared_ptr<bool> stop;
+/*
 void videoDroneThread(std::string &videoPath){
     capture = std::make_shared<cv::VideoCapture>(videoPath);
     frame = std::make_shared<cv::Mat>();
@@ -39,74 +40,70 @@ void keepAlive(ctello::Tello &tello){
         sleep(10);
 	}
 }
-
+*/
 char keepBreathing(char sign, ctello::Tello &tello){ // Added this function inteed of keepAlive(ctello::Tello &tello) for simplicity
 	std::string rc = "rc +0 +0 +5 +0";
 	rc[9]=sign;
 	tello.SendCommand(rc);
-	std::cout << rc << std::endl;
 	return sign=='+'?'-':'+';
 	
 }
 /*Tello part end*/
 
-void runAruco(aruco &detector, drone *myDrone, ctello::Tello &tello){
+void runAruco(aruco &detector, drone *myDrone, ctello::Tello& tello){
 	
         char sign = '+';
         
-        while(detector.ifArucoExist != 1){
-        	std::cout << "waiting for aruco" << std::endl;
-        	sign = keepBreathing(sign,std::ref(tello));
-        	
+        while(detector.ifArucoExist == 0){
+        	std::cout << "waiting for aruco" << std::endl;        	
 	}
-	sleep(1);
+	//sleep(0.05);
 	if(detector.rightLeft < 0.3)
         	myDrone->setRightOrLeft(0); // left drone
         else
         	myDrone->setRightOrLeft(1); // right drone
+        	
     while(true){
 	
         myDrone->addInfo(detector);
-        tello.SendCommand(myDrone->move_drone());
-        sign = keepBreathing(sign,std::ref(tello));
-        //std::cout << myDrone->getRightOrLeft() << std::endl;
+        //tello.SendCommand(myDrone->move_drone());
+        
+        
+        std::string movingCommand= myDrone->move_drone();
+        
+        tello.SendCommand(movingCommand);
+        std::cout << movingCommand << std::endl;
+        
+        sleep(0.1);
+        
+        std::cout 
+       << "forward: " << detector.forward 
+        << " right left: " << detector.rightLeft 
+        << " updown: " << detector.upDown
+        << " angle: " << detector.leftOverAngle.first 
+        << " clockwise: " << detector.leftOverAngle.second 
+        << " id: " << detector.idr 
+        << " read Aruco: " << detector.ifArucoExist
+        << " right or left: " << myDrone->getRightOrLeft()
+        << std::endl;
+        //sign = keepBreathing(sign,std::ref(tello));
 
         
-        
     }
-}/*
-void tzukArucoReaderRun(drone *myDrone){
-    std::ifstream programData("../config.json");
-    nlohmann::json data;
-    programData >> data;
-    programData.close();
-    std::string yamlCalibrationPath = data["yamlCalibrationPath"];
-    bool isCameraString = data["isCameraString"];
-    float currentMarkerSize = data["currentMarkerSize"];
-    if (isCameraString){
-        std::string cameraString = data["cameraString"];
-        aruco detector(yamlCalibrationPath,cameraString,currentMarkerSize);
-    	runAruco(detector, myDrone);
-    }else{
-        int cameraPort = data["cameraPort"];
-        aruco detector(yamlCalibrationPath,cameraPort,currentMarkerSize);
-    	runAruco(detector, myDrone);
-    }
-}*/
-/*void run(drone *myDrone){
-	myDrone->runDrone();
-}*/
+}
+
 
 /*cv::imshow("aruco", *frame);
         cv::waitKey(1);*/
 int main(){
+    std::ifstream programData("../config.json");
+
+   
 	//system("v4l2 -d /dev/video0 focus_auto=0");
-	
-	
-        //std::string settingPath = "../config.json";
-        
-	drone myDrone;
-	std::ifstream programData("../config.json");
+
+ 
+    drone myDrone;
+    
     nlohmann::json data;
     programData >> data;
     programData.close();
@@ -115,29 +112,29 @@ int main(){
     const char *command = commandString.c_str();
     system(command);
     ctello::Tello tello;
-    //tello.SendCommandWithResponse("takeoff");  
     tello.SendCommandWithResponse("streamon");
     std::string videoPath = data["cameraString"];
-
-        std::string yamlCalibrationPath = data["yamlCalibrationPath"];
+    std::string yamlCalibrationPath = data["yamlCalibrationPath"];
     bool isCameraString = data["isCameraString"];
     float currentMarkerSize = data["currentMarkerSize"];
+    
     if (isCameraString){
         std::string cameraString = data["cameraString"];
         aruco detector(yamlCalibrationPath,cameraString,currentMarkerSize);
-    	runAruco(detector, &myDrone,std::ref(tello));
+    	tello.SendCommandWithResponse("takeoff");
+    	runAruco(detector,&myDrone,tello);
     }else{
-        int cameraPort = data["cameraPort"];
+        int cameraPort = data["cameraPort"];       
         aruco detector(yamlCalibrationPath,cameraPort,currentMarkerSize);
-    	runAruco(detector, &myDrone,std::ref(tello));
+    	runAruco(detector, &myDrone ,tello);
+
     }
     
-    
-    stop = std::make_shared<bool>(false);
+    /*
     std::thread t_vid = std::thread(videoDroneThread,std::ref(videoPath));
     std::thread t_heartbeat = std::thread(keepAlive, std::ref(tello));
     int waitKey = 0;
-    std::cout << "frame size" << *frame->size << std::endl;
+    /td::cout << "frame size" << *frame->size << std::endl;
     for (int i{0}; i < 100; i++) {
 	    cv::Mat frameCopy = *frame;
 	cv::imshow("Image", frameCopy);
@@ -145,14 +142,11 @@ int main(){
     }
     *stop = true;
     t_vid.join();
-    t_heartbeat.join();
-    //tello.SendCommandWithResponse("land");
+    t_heartbeat.join();*/
+    tello.SendCommandWithResponse("land");
     cv::destroyAllWindows();
 	
  	
-    	
-    	
-
     	
     return 0;
 }
