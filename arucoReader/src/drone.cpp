@@ -2,19 +2,21 @@
 #include "drone.h"
 #include <iostream>
 #include <string.h>
+#include <thread>
 // #include "runAruco"
 
 // #include "arucoReader"
 // #include "arocuLeaderInfo.h"
 
 /*@Y*/
-float MAX_DIST=1.2;
-float MIN_DIST=0.8;
-float  MAX_LEFT_RIGHT=0.8;
-float  MIN_LEFT_RIGHT=0.2;
-float  UP_DOWN_RANGE=0.3;
+float MAX_DIST=1.3;
+float MIN_DIST=1.1;
+float  MAX_LEFT_RIGHT=0.2;
+float  MIN_LEFT_RIGHT=0.1;
+float  UP_DOWN_RANGE=0.1;
 float  YAW_RANGE=25;
-int ARUCO_DATA_SIZE=14;
+int ARUCO_DATA_SIZE=18;
+float THE_CONST = 10.0;
 /*@Ye*/
 
 drone::drone(){
@@ -37,7 +39,7 @@ void drone::addInfo(aruco &origin){
 	this->upDown = origin.upDown;
     	this->forward = origin.forward;
     	this->rightLeft = origin.rightLeft;
-    	this->idr = origin.idr;
+    	//this->idr = origin.idr;
     	this->ifArucoExist = origin.ifArucoExist;
     	this->clockwise = origin.leftOverAngle.second;
     	this->angle = origin.leftOverAngle.first;
@@ -64,6 +66,11 @@ void drone::addInfo(aruco &origin){
     this->upDown = rawInfo[2];//.upDown;
     this->angle = rawInfo[3];//.leftOverAngle.first;
 }*/
+	int relative_const(float bigger, float smaller){
+		
+		return (int)(((abs(bigger)+0.2)/(abs(smaller)+0.2))*THE_CONST);
+		
+	}
 
 std::string drone::move_drone(){
 
@@ -97,41 +104,58 @@ std::string drone::move_drone(){
 	flags[6], v_data[6] = ifArucoExist
 	*/
     //int flags[ARUCO_DATA_SIZE] = {0}; 
-    std::string flags = "rc +0 +0 +0 +0"; // "rc Left/Right Forward/Backward Up/Down Yaw"
+    std::string flags = "rc  00  00  00  00"; // "rc Left/Right Forward/Backward Up/Down Yaw"
+    int dis = 00;
+    std::string string_dis;
 	/**/
+	
     if(v_data[6]){
         if(v_data[0]<MIN_DIST || v_data[0]>MAX_DIST){
             if(v_data[0]<MIN_DIST){
-                //std::cout << "Move Backward" << std::endl;
-                flags[7]='5';
-                flags[6]='-';
+                dis = relative_const(MIN_DIST,v_data[0]);
+                std::cout << dis << std::endl;
+                flags[8]= dis[0];
+                flags[9]= dis[1];
+                flags[7]='-';
                 
             }else{
-                //std::cout << "Move Forward" << std::endl;
-                flags[7]='5';
+                dis = relative_const(v_data[0],MAX_DIST);
+                //std::cout << dis << std::endl;
+                flags[8]= dis[0];
+                flags[9]= dis[1];
             }
         }
 
         if((abs(v_data[1])>MAX_LEFT_RIGHT)||(abs(v_data[1]) < MIN_LEFT_RIGHT)){
             switch((int)v_data[5]%2){        // Even -> 0 -> Left || Odd -> 1 -> Right
-                case 0:
-                    if(v_data[1]<-MAX_LEFT_RIGHT){
-                        //std::cout << "Move Right" << std::endl;
-                        flags[4]= '5';
+                case 1:
+                    if(v_data[1] > -MIN_LEFT_RIGHT /*|| v_data[1] < -MAX_LEFT_RIGHT*/){
+                        dis = relative_const(MIN_LEFT_RIGHT,v_data[1]);
+                        //std::cout << dis << std::endl;
+                        flags[4]= dis[0];
+                        flags[5]= dis[1];
+                        
                     }else{
-                        //std::cout << "Move Left" << std::endl;
-                        flags[4]= '5';
+                        dis = relative_const(v_data[1],MAX_LEFT_RIGHT);
+                        //std::cout << dis << std::endl;
+                        flags[4]= dis[0];
+                        flags[5]= dis[1];
                         flags[3]='-';
                     }                  
                     break;
-                case 1:
-                    if(v_data[1]<MIN_LEFT_RIGHT){
-                        //std::cout << "Move Right" << std::endl;
-                        flags[4]= '5';
-                    }else{
-                        //std::cout << "Move Left" << std::endl;
-                        flags[4]= '5';
+                case 0:
+                    if(/*v_data[1] < MIN_LEFT_RIGHT ||*/ v_data[1] > MAX_LEFT_RIGHT){
+                        dis = relative_const(MIN_LEFT_RIGHT,v_data[1]);
+                        //std::cout << dis << std::endl;
+                        flags[4]= dis[0];
+                        flags[5]= dis[1];
                         flags[3]='-';
+                    }else{
+                        dis = relative_const(v_data[1],MAX_LEFT_RIGHT);
+                	//std::cout << dis << std::endl;                
+                        flags[4]= dis[0];
+                        flags[5]= dis[1];
+                        
                     }                 
                     break;
                 default:
@@ -144,70 +168,38 @@ std::string drone::move_drone(){
         {
             if(v_data[2]>UP_DOWN_RANGE)
             {
-                //std::cout << "Move Down" << std::endl;
-                flags[9]='-';
-                flags[10]='5';
+            
+            	flags[11]='-';
+                dis = 2 * relative_const(v_data[2],UP_DOWN_RANGE); 
+                string_dis = std::to_string(dis);        
+                flags[12]= string_dis[0];
+                flags[13]= string_dis[1];
+
             }else{
-                //std::cout << "Move Up" << std::endl;
-                flags[10]='5';
+                dis = relative_const(v_data[2],UP_DOWN_RANGE);
+                
+                flags[12]= dis[0];
+                flags[13]= dis[1];
             }
         }
 
-        if(abs(v_data[3])>YAW_RANGE)
+        if(v_data[3]>YAW_RANGE )
         {
-            if(v_data[3]>YAW_RANGE){
+            if(v_data[4]==1){
                 //std::cout << "Yaw right" << std::endl;
-                flags[13]='5';
-            }else{
-                //std::cout << "Yaw left" << std::endl;
-                flags[12]='-';
-                flags[13]='5';
+                flags[15]='-';
+                flags[17]='5';
+            }else{ 
+                flags[17]='5';
             }
         }
 
-    }else{
-    	std::cout<< "waiting for data" << std::endl;
-    }/**/
-    std::cout << flags << std::endl;
-    //tello.SendCommand(flags)
+    }
     return flags;
 
 
     /*@Ye*/
-    /*
-    if(ifArucoExist == 1){
-	    if(clockwise == 0) {
-	    	// move to:
-		// Forward = 1.0;
-		// rightLeft = -0.3;
-		// yaw = 0;   
-		
-		std::cout << "First Drone, tello.SendCommand(rc " 
-	    	<< (rightLeft - (-0.3)) * 100 << " , " 
-	    	<< (forward - 1.0) * 100 << " , " 
-	    	<< (upDown - 0) * 100 << " , "
-	    	<< (angle) << ")"
-	    	<< std::endl << std::endl;
-		
-	    }
-	    else {
-	    	// move to:
-		// Forward = 1.37;
-		// rightLeft = 0.3;
-		// upDown = 0;
-		// yaw = 0
-	    	
-	    	std::cout << "Second Drone, tello.SendCommand(rc " 
-	    	<< (rightLeft - (0.3)) * 100  << " , " 
-	    	<< (forward - 1.37) * 100 << " , " 
-	    	<< (upDown - 0)  * 100 << " , "
-	    	<< (angle)<< ")"
-	    	<< std::endl << std::endl;
-	    }
-	}
-	else{
-		std::cout << "waiting for data" << std::endl;
-	}/**/
+   
 }
 
 /*void set_id(int id){
