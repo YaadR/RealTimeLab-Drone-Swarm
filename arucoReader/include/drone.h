@@ -39,7 +39,7 @@ class drone{
         int idr ;                   //check if still relevant
        	bool clockwise;             //check if still relevant
         bool runCamera ;            //check if still relevant
-        bool RightOrLeft;           //check if still relevant
+        bool RightOrLeft = 1;           //check if still relevant
 
         //static std::vector <float> relativePositionRight = {0,0,0,0};   //need to check syntax
         //static std::vector <float> relativePositionLeft = {0,0,0,0};    //need to check syntax
@@ -53,7 +53,8 @@ class drone{
         // void set_info(std::vector <auto> rawInfo);
  	void addInfo(aruco &aruco);
         //std::vector <auto> get_leader_position();
-        std::string move_drone();
+        //std::string move_drone();
+        int* move_drone();
         void runDrone();
         void setRightOrLeft(int i);         //check if still relevant
         bool getRightOrLeft();
