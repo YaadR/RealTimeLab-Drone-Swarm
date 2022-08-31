@@ -8,6 +8,8 @@
 #include "drone.h"
 #include <thread>
 
+//TELLO-F1F5FB
+
 /*@Y*/
 
 #include <opencv2/calib3d/calib3d.hpp>
@@ -48,11 +50,78 @@ char keepBreathing(char sign, ctello::Tello &tello){ // Added this function inte
 	return sign=='+'?'-':'+';
 	
 }
+void theEqualizer(int ac[], int* eq, int round){
+	ac[0] += eq[0];
+	ac[1] += eq[1];
+	ac[2] += eq[2];
+	ac[3] += eq[3];
+	if(round%10==0){
+		ac[0] = ac[0]/10;
+		ac[1] = ac[1]/10;
+		ac[2] = ac[2]/10;
+		ac[3] = ac[3]/10;
+	}
+	
+		
+}
+
+std::string theStringer(int* arr){
+	std::string str = "rc  00  00  00  00";
+	std::string strd = "00";
+	if(arr[0]<0){
+		strd = std::to_string(abs(arr[0]));
+                str[4]= strd[0];
+                str[5]= strd[1];
+                str[3]='-';
+	}else{
+		strd = std::to_string(arr[0]);
+                str[4]= strd[0];
+                str[5]= strd[1];
+	}
+	
+	if(arr[1]<0){
+		strd = std::to_string(abs(arr[1]));
+                str[8]= strd[0];
+                str[9]= strd[1];
+                str[7]='-';
+	}else{
+		strd = std::to_string(arr[1]);
+                str[8]= strd[0];
+                str[9]= strd[1];
+	}
+	
+	if(arr[2]<0){
+		strd = std::to_string(abs(arr[2]));
+       		 str[11]='-';
+                str[12]= strd[0];
+                str[13]= strd[1];
+	}else{
+		strd = std::to_string(arr[2]);
+                str[12]= strd[0];
+                str[13]= strd[1];
+	}
+	
+	if(arr[3]<0){
+		strd = std::to_string(abs(arr[3]));
+                        str[15]='-';
+                	str[16]=strd[0];
+                	str[17]=strd[1];
+	}else{
+		strd = std::to_string(arr[3]);
+        	str[16]=strd[0];
+        	str[17]=strd[1];;
+	}
+	 
+	 return str;
+}
 /*Tello part end*/
 
 void runAruco(aruco &detector, drone *myDrone, ctello::Tello& tello){
 	
         char sign = '+';
+        int staller  = 0;
+        int* equalizer;
+	int accumulate[4] = {0};
         
         while(detector.ifArucoExist == 0){
         	std::cout << "waiting for aruco" << std::endl;        	
@@ -67,29 +136,33 @@ void runAruco(aruco &detector, drone *myDrone, ctello::Tello& tello){
 	
         myDrone->addInfo(detector);
         //tello.SendCommand(myDrone->move_drone());
+
+        staller++;
+        //std::string movingCommand= myDrone->move_drone();
+
+	equalizer = myDrone->move_drone();
+	
+	theEqualizer(accumulate, equalizer, staller);
+	
+        if(staller%10==0){
+	        std::string movingCommand = theStringer(accumulate);  
+	        tello.SendCommand(movingCommand);
+	        accumulate[0] = 0;
+	        accumulate[1] = 0;
+	        accumulate[2] = 0;
+	        accumulate[3] = 0;
+        	//tello.SendCommand("rc 0 5 0 0");
+        	std::cout << "passing: " <<movingCommand << std::endl;
+        }
         
+       sleep(0.1);
         
-        std::string movingCommand= myDrone->move_drone();
-        
-        tello.SendCommand(movingCommand);
-        std::cout << movingCommand << std::endl;
-        
-        sleep(0.1);
-        
-        std::cout 
-       << "forward: " << detector.forward 
-        << " right left: " << detector.rightLeft 
-        << " updown: " << detector.upDown
-        << " angle: " << detector.leftOverAngle.first 
-        << " clockwise: " << detector.leftOverAngle.second 
-        << " id: " << detector.idr 
-        << " read Aruco: " << detector.ifArucoExist
-        << " right or left: " << myDrone->getRightOrLeft()
-        << std::endl;
+
         //sign = keepBreathing(sign,std::ref(tello));
 
         
-    }
+    
+}
 }
 
 
@@ -121,7 +194,7 @@ int main(){
     if (isCameraString){
         std::string cameraString = data["cameraString"];
         aruco detector(yamlCalibrationPath,cameraString,currentMarkerSize);
-    	tello.SendCommandWithResponse("takeoff");
+    	//tello.SendCommandWithResponse("takeoff");
     	runAruco(detector,&myDrone,tello);
     }else{
         int cameraPort = data["cameraPort"];       
