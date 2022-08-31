@@ -109,9 +109,9 @@ void aruco::trackMarkerThread() {
                     continue;
                 }
                 auto t = cv::Mat(-rmat.t() * cv::Mat(localTvecs[rightId]));
-                rightLeft = t.at<double>(0) * 100;
-                upDown = t.at<double>(1) * 100;
-                forward = t.at<double>(2) * 100;
+                rightLeft = t.at<double>(0);
+                upDown = t.at<double>(1);
+                forward = t.at<double>(2);
                 
                 leftOverAngle = getLeftOverAngleFromRotationVector(localRvecs[rightId]);
                 usleep(amountOfUSleepForTrackMarker);    
@@ -197,3 +197,4 @@ aruco::~aruco() {
     arucoThread.join();
     capture->release();
 }
+
