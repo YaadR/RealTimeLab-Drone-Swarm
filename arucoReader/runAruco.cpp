@@ -21,7 +21,8 @@
 #include <string.h>
 /*@Ye*/
 
-
+int AVRAGE = 10;
+float SLEEP =1000;
 /*Tello part*/
 //std::shared_ptr<cv::VideoCapture> capture;
 //std::shared_ptr<cv::Mat> frame;
@@ -56,10 +57,10 @@ void theEqualizer(int ac[], int* eq, int round){
 	ac[2] += eq[2];
 	ac[3] += eq[3];
 	if(round%10==0){
-		ac[0] = ac[0]/10;
-		ac[1] = ac[1]/10;
-		ac[2] = ac[2]/10;
-		ac[3] = ac[3]/10;
+		ac[0] = ac[0]/AVRAGE;
+		ac[1] = ac[1]/AVRAGE;
+		ac[2] = ac[2]/AVRAGE;
+		ac[3] = ac[3]/AVRAGE;
 	}
 	
 		
@@ -82,6 +83,25 @@ void theStringer(int* arr,ctello::Tello& tello){
 }
 /*Tello part end*/
 
+void acquiring(aruco &detector, ctello::Tello& tello){
+	int count = 70;
+	
+	if(detector.ifArucoExist == 0){
+		
+		while(count != 0){
+			std::cout << " can't find aRuco" << std::endl;
+			tello.SendCommand("rc 0 0 0 25");
+			sleep(0.2);
+			count--;
+		}
+	}
+	else{
+		return;
+	}
+	if(count == 0)
+		//tello.SendCommand("land");
+	return;
+}
 void runAruco(aruco &detector, drone *myDrone, ctello::Tello& tello){
 	
         char sign = '+';
@@ -94,10 +114,11 @@ void runAruco(aruco &detector, drone *myDrone, ctello::Tello& tello){
 	}
 	sleep(2);
 	if(detector.rightLeft > 0.2)
-        	myDrone->setRightOrLeft(0); // left drone
+        	myDrone->setRightOrLeft(1); // left drone
         else
-        	myDrone->setRightOrLeft(1); // right drone
+        	myDrone->setRightOrLeft(0); // right drone
         	
+       	int dontsee = 0;
     while(true){
 
         myDrone->addInfo(detector);
@@ -107,29 +128,36 @@ void runAruco(aruco &detector, drone *myDrone, ctello::Tello& tello){
         //std::string movingCommand= myDrone->move_drone();
 
 	equalizer = myDrone->move_drone();
+	if(equalizer[0] == -1 && equalizer[1] == -1 && equalizer[2] == -1 && equalizer[3] == -1){
+		dontsee++;
+		if(dontsee >= 10){
+			acquiring(detector, tello);
+		}
+		std::cout << dontsee << std::endl;
+	}
 	
-	theEqualizer(accumulate, equalizer, staller);
-	
-        if(staller%10==0){
+	else{
+		dontsee = 0;
+		theEqualizer(accumulate, equalizer, staller);	
+	        if(staller%AVRAGE==0){
+		        //std::string movingCommand = theStringer(accumulate);  
+		        theStringer(accumulate,tello);	        
+		        accumulate[0] = 0;
+		        accumulate[1] = 0;
+		        accumulate[2] = 0;
+		        accumulate[3] = 0;
+        		
 
-	        //std::string movingCommand = theStringer(accumulate);  
-	        theStringer(accumulate,tello);	        
-	        accumulate[0] = 0;
-	        accumulate[1] = 0;
-	        accumulate[2] = 0;
-	        accumulate[3] = 0;
-        	
-
-        }
-	if(staller%50==0){
-		std::cout << std::endl << std::endl
-	       << "forward: " << detector.forward 
-		<< " right left: " << detector.rightLeft 
-		<< " updown: " << detector.upDown
-		<< " right or left: " << myDrone->getRightOrLeft()
-		<< std::endl << std::endl;}
-        
-       sleep(0.1);
+        	}
+		if(staller%10==0){
+			std::cout << std::endl << std::endl
+	       		<< "forward: " << detector.forward 
+			<< " right left: " << detector.rightLeft 
+			<< " updown: " << detector.upDown
+			<< " right or left: " << myDrone->getRightOrLeft()
+			<< std::endl << std::endl;}
+       }
+       usleep(SLEEP);
        //tello.SendCommand("rc 0 0 0 0");
 
         //sign = keepBreathing(sign,std::ref(tello));

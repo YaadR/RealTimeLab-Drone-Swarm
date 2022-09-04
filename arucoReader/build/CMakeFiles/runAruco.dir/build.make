@@ -93,6 +93,7 @@ runAruco_EXTERNAL_OBJECTS =
 runAruco: CMakeFiles/runAruco.dir/runAruco.cpp.o
 runAruco: CMakeFiles/runAruco.dir/build.make
 runAruco: libaruco.a
+runAruco: libdrone.a
 runAruco: /usr/local/lib/libopencv_stitching.so.3.4.16
 runAruco: /usr/local/lib/libopencv_superres.so.3.4.16
 runAruco: /usr/local/lib/libopencv_videostab.so.3.4.16

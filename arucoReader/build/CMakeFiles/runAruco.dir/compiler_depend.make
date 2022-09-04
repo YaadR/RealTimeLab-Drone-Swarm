@@ -485,8 +485,83 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
   /usr/local/include/opencv2/aruco/dictionary.hpp \
   /usr/include/c++/11/thread \
   /usr/include/c++/11/bits/std_thread.h \
-  /usr/include/c++/11/bits/this_thread_sleep.h
+  /usr/include/c++/11/bits/this_thread_sleep.h \
+  ../include/drone.h \
+  ../include/aruco.h \
+  /usr/local/include/opencv2/calib3d/calib3d.hpp \
+  /usr/local/include/opencv2/highgui/highgui.hpp \
+  /usr/local/include/opencv2/imgproc/imgproc.hpp \
+  /usr/local/include/ctello.h \
+  /usr/include/aarch64-linux-gnu/sys/socket.h \
+  /usr/include/aarch64-linux-gnu/bits/types/struct_iovec.h \
+  /usr/include/aarch64-linux-gnu/bits/socket.h \
+  /usr/include/aarch64-linux-gnu/bits/socket_type.h \
+  /usr/include/aarch64-linux-gnu/bits/sockaddr.h \
+  /usr/include/aarch64-linux-gnu/asm/socket.h \
+  /usr/include/asm-generic/socket.h \
+  /usr/include/linux/posix_types.h \
+  /usr/include/linux/stddef.h \
+  /usr/include/aarch64-linux-gnu/asm/posix_types.h \
+  /usr/include/asm-generic/posix_types.h \
+  /usr/include/aarch64-linux-gnu/asm/bitsperlong.h \
+  /usr/include/asm-generic/bitsperlong.h \
+  /usr/include/aarch64-linux-gnu/asm/sockios.h \
+  /usr/include/asm-generic/sockios.h \
+  /usr/include/aarch64-linux-gnu/bits/types/struct_osockaddr.h \
+  /usr/include/netdb.h \
+  /usr/include/netinet/in.h \
+  /usr/include/aarch64-linux-gnu/bits/in.h \
+  /usr/include/rpc/netdb.h \
+  /usr/include/aarch64-linux-gnu/bits/types/sigevent_t.h \
+  /usr/include/aarch64-linux-gnu/bits/types/__sigval_t.h \
+  /usr/include/aarch64-linux-gnu/bits/netdb.h \
+  /usr/include/aarch64-linux-gnu/sys/stat.h \
+  /usr/include/aarch64-linux-gnu/bits/stat.h \
+  /usr/include/aarch64-linux-gnu/bits/struct_stat.h \
+  /usr/include/aarch64-linux-gnu/bits/statx.h \
+  /usr/include/linux/stat.h \
+  /usr/include/linux/types.h \
+  /usr/include/aarch64-linux-gnu/asm/types.h \
+  /usr/include/asm-generic/types.h \
+  /usr/include/asm-generic/int-ll64.h \
+  /usr/include/aarch64-linux-gnu/bits/statx-generic.h \
+  /usr/include/aarch64-linux-gnu/bits/types/struct_statx_timestamp.h \
+  /usr/include/aarch64-linux-gnu/bits/types/struct_statx.h \
+  /usr/include/c++/11/optional \
+  /usr/include/memory.h
 
+
+/usr/include/memory.h:
+
+/usr/include/linux/types.h:
+
+/usr/include/aarch64-linux-gnu/bits/struct_stat.h:
+
+/usr/include/aarch64-linux-gnu/sys/stat.h:
+
+/usr/include/aarch64-linux-gnu/bits/types/__sigval_t.h:
+
+/usr/include/aarch64-linux-gnu/bits/types/sigevent_t.h:
+
+/usr/include/aarch64-linux-gnu/bits/in.h:
+
+/usr/include/netdb.h:
+
+/usr/include/aarch64-linux-gnu/bits/types/struct_osockaddr.h:
+
+/usr/include/asm-generic/sockios.h:
+
+/usr/include/linux/posix_types.h:
+
+/usr/include/aarch64-linux-gnu/bits/sockaddr.h:
+
+/usr/local/include/opencv2/imgproc/imgproc.hpp:
+
+/usr/local/include/opencv2/highgui/highgui.hpp:
+
+/usr/local/include/opencv2/calib3d/calib3d.hpp:
+
+/usr/include/rpc/netdb.h:
 
 /usr/local/include/opencv2/aruco/dictionary.hpp:
 
@@ -546,6 +621,8 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 
 /usr/local/include/opencv2/videostab/optical_flow.hpp:
 
+/usr/include/asm-generic/posix_types.h:
+
 /usr/include/c++/11/bits/fstream.tcc:
 
 /usr/include/aarch64-linux-gnu/c++/11/bits/c++io.h:
@@ -578,6 +655,8 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 
 /usr/local/include/opencv2/stitching/detail/util_inl.hpp:
 
+../include/drone.h:
+
 /usr/include/c++/11/list:
 
 /usr/local/include/opencv2/stitching/detail/motion_estimators.hpp:
@@ -606,9 +685,13 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 
 /usr/include/c++/11/bits/stl_deque.h:
 
+/usr/include/linux/stat.h:
+
 /usr/local/include/opencv2/videostab/deblurring.hpp:
 
 /usr/include/c++/11/deque:
+
+/usr/include/aarch64-linux-gnu/bits/statx.h:
 
 /usr/local/include/opencv2/objdetect/objdetect_c.h:
 
@@ -630,9 +713,13 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 
 /usr/local/include/opencv2/videoio.hpp:
 
+/usr/include/netinet/in.h:
+
 /usr/local/include/opencv2/highgui.hpp:
 
 /usr/local/include/opencv2/flann/sampling.h:
+
+/usr/include/aarch64-linux-gnu/sys/socket.h:
 
 /usr/local/include/opencv2/flann/index_testing.h:
 
@@ -680,6 +767,8 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 
 /usr/local/include/opencv2/flann/all_indices.h:
 
+/usr/include/aarch64-linux-gnu/bits/types/struct_statx.h:
+
 /usr/local/include/opencv2/flann/result_set.h:
 
 /usr/local/include/opencv2/stitching/warpers.hpp:
@@ -703,6 +792,8 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 /usr/include/c++/11/bits/stl_tree.h:
 
 /usr/include/c++/11/bits/parse_numbers.h:
+
+/usr/include/aarch64-linux-gnu/bits/types/struct_statx_timestamp.h:
 
 /usr/include/c++/11/thread:
 
@@ -816,6 +907,8 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 
 /usr/include/aarch64-linux-gnu/bits/types/struct_timespec.h:
 
+/usr/include/aarch64-linux-gnu/asm/bitsperlong.h:
+
 /usr/include/c++/11/bits/allocated_ptr.h:
 
 /usr/include/aarch64-linux-gnu/bits/mathcalls.h:
@@ -854,6 +947,8 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 
 /usr/include/aarch64-linux-gnu/bits/floatn-common.h:
 
+/usr/include/aarch64-linux-gnu/bits/socket_type.h:
+
 /usr/include/aarch64-linux-gnu/bits/waitstatus.h:
 
 /usr/include/c++/11/tr1/riemann_zeta.tcc:
@@ -882,6 +977,8 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 
 /usr/include/c++/11/type_traits:
 
+/usr/include/asm-generic/int-ll64.h:
+
 /usr/include/c++/11/bits/stl_algo.h:
 
 /usr/local/include/opencv2/superres/optical_flow.hpp:
@@ -897,6 +994,8 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 /usr/include/aarch64-linux-gnu/bits/types/cookie_io_functions_t.h:
 
 /usr/include/aarch64-linux-gnu/bits/types/timer_t.h:
+
+/usr/include/asm-generic/socket.h:
 
 /usr/include/c++/11/bits/invoke.h:
 
@@ -918,9 +1017,19 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 
 /usr/include/c++/11/cstdint:
 
+/usr/include/asm-generic/types.h:
+
+/usr/include/asm-generic/bitsperlong.h:
+
 /usr/include/c++/11/bits/concept_check.h:
 
+/usr/include/c++/11/optional:
+
 /usr/include/aarch64-linux-gnu/bits/thread-shared-types.h:
+
+/usr/include/aarch64-linux-gnu/asm/sockios.h:
+
+/usr/include/linux/stddef.h:
 
 /usr/include/c++/11/bits/refwrap.h:
 
@@ -1028,6 +1137,8 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 
 /usr/include/aarch64-linux-gnu/bits/select.h:
 
+/usr/include/aarch64-linux-gnu/asm/posix_types.h:
+
 /usr/include/aarch64-linux-gnu/bits/setjmp.h:
 
 /usr/local/include/opencv2/core/version.hpp:
@@ -1070,6 +1181,8 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 
 /usr/local/include/opencv2/core/cvstd.hpp:
 
+/usr/include/aarch64-linux-gnu/bits/stat.h:
+
 /usr/include/aarch64-linux-gnu/c++/11/bits/os_defines.h:
 
 /usr/include/aarch64-linux-gnu/bits/libc-header-start.h:
@@ -1087,6 +1200,8 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 /usr/include/features.h:
 
 /usr/include/errno.h:
+
+/usr/include/aarch64-linux-gnu/asm/types.h:
 
 /usr/include/aarch64-linux-gnu/bits/stdint-uintn.h:
 
@@ -1113,6 +1228,8 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 /usr/include/c++/11/bits/hash_bytes.h:
 
 /usr/include/c++/11/bits/move.h:
+
+/usr/include/aarch64-linux-gnu/bits/types/struct_iovec.h:
 
 /usr/include/aarch64-linux-gnu/c++/11/bits/c++config.h:
 
@@ -1205,6 +1322,8 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 /usr/local/include/opencv2/shape/shape_distance.hpp:
 
 /usr/include/c++/11/bits/stl_bvector.h:
+
+/usr/include/aarch64-linux-gnu/bits/socket.h:
 
 /usr/local/include/opencv2/core/traits.hpp:
 
@@ -1352,6 +1471,8 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 
 /usr/include/aarch64-linux-gnu/bits/stdio_lim.h:
 
+/usr/include/aarch64-linux-gnu/asm/socket.h:
+
 /usr/include/aarch64-linux-gnu/c++/11/bits/ctype_base.h:
 
 /usr/include/c++/11/functional:
@@ -1392,6 +1513,8 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 
 /usr/include/c++/11/bits/specfun.h:
 
+/usr/include/aarch64-linux-gnu/bits/netdb.h:
+
 /usr/include/c++/11/tr1/gamma.tcc:
 
 /usr/include/c++/11/array:
@@ -1408,7 +1531,11 @@ CMakeFiles/runAruco.dir/runAruco.cpp.o: ../runAruco.cpp \
 
 /usr/local/include/opencv2/core/ptr.inl.hpp:
 
+/usr/include/aarch64-linux-gnu/bits/statx-generic.h:
+
 /usr/local/include/opencv2/core/mat.inl.hpp:
+
+/usr/local/include/ctello.h:
 
 /usr/include/c++/11/map:
 

@@ -17,4 +17,4 @@ target_link_libraries(aruco -lpthread ${OpenCV_LIBS})
 
 add_executable(runAruco runAruco.cpp)
 
-target_link_libraries(runAruco aruco drone -lctello -std=c++11 nlohmann_json::nlohmann_json)
+target_link_libraries(runAruco aruco drone -lctello -std=c++11 -pthread nlohmann_json::nlohmann_json)

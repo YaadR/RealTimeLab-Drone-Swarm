@@ -1,10 +1,10 @@
 {
-  "yamlCalibrationPath" : "/home/rbdpi4/arucoReader/cameraConfigs/example.yaml",
+  "yamlCalibrationPath" : "/home/rbdpi4/arucoReader/cameraConfigs/drone.yaml",
   "isCameraString": true,
   "cameraPort": 0,
   "cameraString": "udp://0.0.0.0:11111?overrun_nonfatal=1&fifo_size=5000",
-  "currentMarkerSize" : 0.2,
-  "DroneName": "Tello22"
+  "currentMarkerSize" : 0.05,
+  "DroneName": "TELLO-F1F7CD"
 }
 
 

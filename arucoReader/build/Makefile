@@ -130,6 +130,19 @@ aruco/fast:
 .PHONY : aruco/fast
 
 #=============================================================================
+# Target rules for targets named drone
+
+# Build rule for target.
+drone: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 drone
+.PHONY : drone
+
+# fast build rule for target.
+drone/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drone.dir/build.make CMakeFiles/drone.dir/build
+.PHONY : drone/fast
+
+#=============================================================================
 # Target rules for targets named runAruco
 
 # Build rule for target.
@@ -190,6 +203,30 @@ src/aruco.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/aruco.dir/build.make CMakeFiles/aruco.dir/src/aruco.cpp.s
 .PHONY : src/aruco.cpp.s
 
+src/drone.o: src/drone.cpp.o
+.PHONY : src/drone.o
+
+# target to build an object file
+src/drone.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drone.dir/build.make CMakeFiles/drone.dir/src/drone.cpp.o
+.PHONY : src/drone.cpp.o
+
+src/drone.i: src/drone.cpp.i
+.PHONY : src/drone.i
+
+# target to preprocess a source file
+src/drone.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drone.dir/build.make CMakeFiles/drone.dir/src/drone.cpp.i
+.PHONY : src/drone.cpp.i
+
+src/drone.s: src/drone.cpp.s
+.PHONY : src/drone.s
+
+# target to generate assembly for a file
+src/drone.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drone.dir/build.make CMakeFiles/drone.dir/src/drone.cpp.s
+.PHONY : src/drone.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -199,6 +236,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... aruco"
+	@echo "... drone"
 	@echo "... runAruco"
 	@echo "... runAruco.o"
 	@echo "... runAruco.i"
@@ -206,6 +244,9 @@ help:
 	@echo "... src/aruco.o"
 	@echo "... src/aruco.i"
 	@echo "... src/aruco.s"
+	@echo "... src/drone.o"
+	@echo "... src/drone.i"
+	@echo "... src/drone.s"
 .PHONY : help
 
 

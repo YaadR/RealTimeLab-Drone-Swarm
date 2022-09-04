@@ -64,6 +64,7 @@ CMAKE_BINARY_DIR = /home/rbdpi4/arucoReader/build
 
 # The main recursive "all" target.
 all: CMakeFiles/aruco.dir/all
+all: CMakeFiles/drone.dir/all
 all: CMakeFiles/runAruco.dir/all
 .PHONY : all
 
@@ -73,6 +74,7 @@ preinstall:
 
 # The main recursive "clean" target.
 clean: CMakeFiles/aruco.dir/clean
+clean: CMakeFiles/drone.dir/clean
 clean: CMakeFiles/runAruco.dir/clean
 .PHONY : clean
 
@@ -103,18 +105,45 @@ CMakeFiles/aruco.dir/clean:
 .PHONY : CMakeFiles/aruco.dir/clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/drone.dir
+
+# All Build rule for target.
+CMakeFiles/drone.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drone.dir/build.make CMakeFiles/drone.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drone.dir/build.make CMakeFiles/drone.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/rbdpi4/arucoReader/build/CMakeFiles --progress-num=3,4 "Built target drone"
+.PHONY : CMakeFiles/drone.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/drone.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/rbdpi4/arucoReader/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/drone.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/rbdpi4/arucoReader/build/CMakeFiles 0
+.PHONY : CMakeFiles/drone.dir/rule
+
+# Convenience name for target.
+drone: CMakeFiles/drone.dir/rule
+.PHONY : drone
+
+# clean rule for target.
+CMakeFiles/drone.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drone.dir/build.make CMakeFiles/drone.dir/clean
+.PHONY : CMakeFiles/drone.dir/clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/runAruco.dir
 
 # All Build rule for target.
 CMakeFiles/runAruco.dir/all: CMakeFiles/aruco.dir/all
+CMakeFiles/runAruco.dir/all: CMakeFiles/drone.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/runAruco.dir/build.make CMakeFiles/runAruco.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/runAruco.dir/build.make CMakeFiles/runAruco.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/rbdpi4/arucoReader/build/CMakeFiles --progress-num=3,4 "Built target runAruco"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/rbdpi4/arucoReader/build/CMakeFiles --progress-num=5,6 "Built target runAruco"
 .PHONY : CMakeFiles/runAruco.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/runAruco.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/rbdpi4/arucoReader/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/rbdpi4/arucoReader/build/CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/runAruco.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/rbdpi4/arucoReader/build/CMakeFiles 0
 .PHONY : CMakeFiles/runAruco.dir/rule
