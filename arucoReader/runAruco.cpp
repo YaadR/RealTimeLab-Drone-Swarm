@@ -21,7 +21,7 @@
 #include <string.h>
 /*@Ye*/
 
-int AVRAGE = 10;
+int AVRAGE = 5;
 float SLEEP =1000;
 /*Tello part*/
 //std::shared_ptr<cv::VideoCapture> capture;
@@ -90,7 +90,7 @@ void acquiring(aruco &detector, ctello::Tello& tello){
 		
 		while(count != 0){
 			std::cout << " can't find aRuco" << std::endl;
-			tello.SendCommand("rc 0 0 0 25");
+			tello.SendCommand("rc 0 0 0 50");
 			sleep(0.2);
 			count--;
 		}
@@ -114,9 +114,9 @@ void runAruco(aruco &detector, drone *myDrone, ctello::Tello& tello){
 	}
 	sleep(2);
 	if(detector.rightLeft > 0.2)
-        	myDrone->setRightOrLeft(1); // left drone
+        	myDrone->setRightOrLeft(0); // left drone
         else
-        	myDrone->setRightOrLeft(0); // right drone
+        	myDrone->setRightOrLeft(1); // right drone
         	
        	int dontsee = 0;
     while(true){
@@ -130,8 +130,9 @@ void runAruco(aruco &detector, drone *myDrone, ctello::Tello& tello){
 	equalizer = myDrone->move_drone();
 	if(equalizer[0] == -1 && equalizer[1] == -1 && equalizer[2] == -1 && equalizer[3] == -1){
 		dontsee++;
-		if(dontsee >= 10){
+		if(dontsee >= 1500){
 			acquiring(detector, tello);
+			dontsee = 0;
 		}
 		std::cout << dontsee << std::endl;
 	}
