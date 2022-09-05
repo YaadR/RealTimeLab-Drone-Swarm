@@ -21,7 +21,7 @@
 #include <string.h>
 /*@Ye*/
 
-int AVRAGE = 5;
+int AVRAGE = 10;
 float SLEEP =1000;
 /*Tello part*/
 //std::shared_ptr<cv::VideoCapture> capture;
@@ -89,9 +89,11 @@ void acquiring(aruco &detector, ctello::Tello& tello){
 	if(detector.ifArucoExist == 0){
 		
 		while(count != 0){
+			if(detector.ifArucoExist == 1)
+				return;
 			std::cout << " can't find aRuco" << std::endl;
-			tello.SendCommand("rc 0 0 0 50");
-			sleep(0.2);
+			tello.SendCommand("rc 0 0 0 25");
+			sleep(0.5);
 			count--;
 		}
 	}
@@ -108,15 +110,17 @@ void runAruco(aruco &detector, drone *myDrone, ctello::Tello& tello){
         int staller  = 0;
         int* equalizer;
 	int accumulate[4] = {0};
-        
+        tello.SendCommand("rc 0 0 18 0");
         while(detector.ifArucoExist == 0){
         	std::cout << "waiting for aruco" << std::endl;        	
 	}
 	sleep(2);
-	if(detector.rightLeft > 0.2)
+	/*if(detector.rightLeft > 0.2)
         	myDrone->setRightOrLeft(0); // left drone
         else
-        	myDrone->setRightOrLeft(1); // right drone
+        	myDrone->setRightOrLeft(1); // right drone*/
+        	
+       myDrone->setRightOrLeft(1);
         	
        	int dontsee = 0;
     while(true){
@@ -134,9 +138,12 @@ void runAruco(aruco &detector, drone *myDrone, ctello::Tello& tello){
 			acquiring(detector, tello);
 			dontsee = 0;
 		}
+		equalizer[0] == 0;
+		equalizer[1] == 0;
+		equalizer[2] == 0;
+		equalizer[3] == 0;
 		std::cout << dontsee << std::endl;
 	}
-	
 	else{
 		dontsee = 0;
 		theEqualizer(accumulate, equalizer, staller);	
@@ -202,6 +209,7 @@ int main(){
     }else{
         int cameraPort = data["cameraPort"];       
         aruco detector(yamlCalibrationPath,cameraPort,currentMarkerSize);
+        tello.SendCommandWithResponse("takeoff");
     	runAruco(detector, &myDrone ,tello);
 
     }

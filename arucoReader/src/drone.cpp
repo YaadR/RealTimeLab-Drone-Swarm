@@ -6,14 +6,14 @@
 #include <math.h>
 
 
-float MAX_DIST_LEFT = 1.1;
+float MAX_DIST_LEFT = 1.0;
 float MIN_DIST_LEFT = 0.8;
 
-float MAX_DIST_RIGHT = 1.3;
-float MIN_DIST_RIGHT = 1;
+float MAX_DIST_RIGHT = 1.35;
+float MIN_DIST_RIGHT = 1.25;
 
-float MAX_LEFT_RIGHT = 0.2;
-float MIN_LEFT_RIGHT = 0.05;
+float MAX_LEFT_RIGHT = 0.3;
+float MIN_LEFT_RIGHT = 0.15;
 
 
 float UP_RANGE = 0.25;
@@ -150,7 +150,7 @@ int* drone::move_drone(){
         flags+= " ";
         
         switch((int)v_data[5]%2){
-        case 0:
+        case 1:
 		if(v_data[0]<MIN_DIST_LEFT || v_data[0]>MAX_DIST_LEFT){
 		    if(v_data[0]<MIN_DIST_LEFT){
 		        dis = relative_const(MIN_DIST_LEFT,v_data[0]);
@@ -166,7 +166,7 @@ int* drone::move_drone(){
 		    }
 		}
 		break;
-	case 1:
+	case 0:
 		if(v_data[0]<MIN_DIST_RIGHT || v_data[0]>MAX_DIST_RIGHT){
 		    if(v_data[0]<MIN_DIST_RIGHT){
 		        dis = relative_const(MIN_DIST_RIGHT,v_data[0]);
@@ -190,12 +190,14 @@ int* drone::move_drone(){
             if(v_data[2]>UP_RANGE)
             {
                 dis = relative_const(v_data[2],UP_RANGE); 
+                dis = int(dis*0.5);
        		equalizer[2]= -dis;
 		flags+= std::to_string(-dis);
 
             }else{
                 dis = relative_const(v_data[2],DOWN_RANGE);
-       		 equalizer[2]= dis;
+       		dis = int(dis*0.5);
+       		equalizer[2]= dis;
                 flags+= std::to_string(dis);
             }
         }
@@ -206,19 +208,19 @@ int* drone::move_drone(){
 	if(v_data[3]>YAW_RANGE)
         {
             if(v_data[4]==1){
-		equalizer[3] = 1.5*relative_const(v_data[3],15);
+		equalizer[3] = 1.5*relative_const(v_data[3],10);
             }else{ 
        
-		equalizer[3] = (-1.5)*relative_const(v_data[3],15);              
+		equalizer[3] = (-1.5)*relative_const(v_data[3],10);              
             }
         }
         if(v_data[3]>YAW_RANGE*2)
         {
             if(v_data[4]==1){
-//            	equalizer[1] = -25;
+            	equalizer[1] = -25;
 		equalizer[3] = 1.5*relative_const(v_data[3],15);
             }else{ 
-//       		equalizer[1] = -25;
+       		equalizer[1] = -25;
 		equalizer[3] = (-1.5)*relative_const(v_data[3],15);              
             }
         }
