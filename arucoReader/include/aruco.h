@@ -32,7 +32,7 @@ public:
     std::pair<int, bool> leftOverAngle{0, false};
     int idr = 0;
     bool ifArucoExist = false;
-    
+    int rollAngle = 0;
     void print_aruco();                          //for gebug
     aruco& operator=(const aruco& origin);      //for set info in info class at specific drone
     bool get_id();
@@ -57,7 +57,7 @@ private:
     void getEulerAngles(cv::Mat &rotCameraMatrix, cv::Vec3d &eulerAngles);
 
     std::pair<int, bool> getLeftOverAngleFromRotationVector(const cv::Vec<double, 3> &rvec);
-
+    int getHorizontalAngleFromRotationVector(const cv::Vec<double, 3> &rvec);
     void getCameraFeed();
 };
 

@@ -31,6 +31,7 @@ class drone{
         float forward ;                 //for each vector
         float upDown ;                  //for each vector
        	int angle;                      //for each vector
+       	int rollAngle;			//for each vector
 
         bool ifArucoExist ;             //necessary only for raw info 
 
