@@ -6,18 +6,18 @@
 #include <math.h>
 
 
-float MAX_DIST_LEFT = 0.95;
-float MIN_DIST_LEFT = 0.8;
+float MAX_DIST_LEFT = 1.5;
+float MIN_DIST_LEFT = 1.1;
 
-float MAX_DIST_RIGHT = 1.35;
-float MIN_DIST_RIGHT = 1.25;
+float MAX_DIST_RIGHT = 1.8;
+float MIN_DIST_RIGHT = 1.4;
 
 float MAX_LEFT_RIGHT = 0.3;
 float MIN_LEFT_RIGHT = 0.15;
 
 
-float UP_RANGE = 0.25;
-float DOWN_RANGE = 0.0;
+float UP_RANGE = 10; //0.1;
+float DOWN_RANGE = -15; //-0.1;
 
 float YAW_RANGE = 15;
 
@@ -29,7 +29,8 @@ int POWER_SCALE_MIN = 30;
 int POWER_SCALE_MAX = 15;
 
 int equalizer[4] ={0};
-
+float MINN = 0;
+float  MAXX = 0;
 
 drone::drone(){
 	
@@ -51,15 +52,24 @@ bool drone::getRightOrLeft(){
 
 
 void drone::addInfo(aruco &origin){
-	this->upDown = origin.upDown;
+	//this->upDown = origin.upDown;
     	this->forward = origin.forward;
     	this->rightLeft = origin.rightLeft;
     	this->ifArucoExist = origin.ifArucoExist;
     	this->clockwise = origin.leftOverAngle.second;
     	this->angle = origin.leftOverAngle.first;
+    	//this->rollAngle = origin.rollAngle
+	if(origin.rollAngle > 0){
+		this->upDown = origin.upDown*100 + (180 - origin.rollAngle);
+	} else {
+		this->upDown = origin.upDown*100 - (180 + origin.rollAngle);
+	}
 
 }
-
+void ret_min_max(float curr){
+	MAXX = MAXX < curr ? curr:MAXX;
+	MINN = MINN > curr ? curr:MINN;
+}
 int min_ret(float a, float b){
 		return int(a>=b?b:a);
 
@@ -101,9 +111,9 @@ int* drone::move_drone(){
 	flags[5], v_data[5] = idr
 	flags[6], v_data[6] = ifArucoExist
 	*/
-    std::string flags = "rc "; // "rc Left/Right Forward/Backward Up/Down Yaw"
-    int dis = 0;
+    	// "rc Left/Right Forward/Backward Up/Down Yaw"
 
+	
 	equalizer[0] = 0;
 	equalizer[1] = 0;
 	equalizer[2] = 0;
@@ -115,95 +125,56 @@ int* drone::move_drone(){
             switch((int)v_data[5]%2){        // Even -> 0 -> Left || Odd -> 1 -> Right
                 case 1:
                     if(v_data[1] > -MIN_LEFT_RIGHT){
-                        dis = relative_const(MIN_LEFT_RIGHT,v_data[1]);
-                        dis = int(dis*1.2);
-                        equalizer[0]= -dis;
-                        flags+= std::to_string(-dis);
-
-                        
+                        equalizer[0]= int(-relative_const(MIN_LEFT_RIGHT,v_data[1])*1.2);
                     }else if(v_data[1] < -MAX_LEFT_RIGHT){
-                    	dis = relative_const(v_data[1],MAX_LEFT_RIGHT);
-                        dis = int(dis*1.2);
-                        equalizer[0]= dis;
-                        flags+= std::to_string(dis);
+                        equalizer[0]= int(relative_const(v_data[1],MAX_LEFT_RIGHT)*1.2);
                     }                  
                     break;
                 case 0:
                     if(v_data[1] > MAX_LEFT_RIGHT){
-                        dis = relative_const(MIN_LEFT_RIGHT,v_data[1]);
-                        dis = int(dis*1.2);
-                        equalizer[0]= -dis;
-                        flags+= std::to_string(-dis);
-
+                        equalizer[0]= int(-relative_const(MIN_LEFT_RIGHT,v_data[1])*1.2);
                     }else if(v_data[1] < MIN_LEFT_RIGHT){
- 
-                        dis = relative_const(v_data[1],MAX_LEFT_RIGHT);
-                        dis = int(dis*1.2);
-                        equalizer[0]= dis;
-                        flags+= std::to_string(dis);              
+                        equalizer[0]= int(relative_const(v_data[1],MAX_LEFT_RIGHT)*1.2);        
                     }                 
                     break;
                 default:
                     break;
             }
         }
-        flags+= " ";
         
         switch((int)v_data[5]%2){
         case 1:
 		if(v_data[0]<MIN_DIST_LEFT || v_data[0]>MAX_DIST_LEFT){
 		    if(v_data[0]<MIN_DIST_LEFT){
-		        dis = relative_const(MIN_DIST_LEFT,v_data[0]);
-		        dis = int(dis*1.5);
-		        equalizer[1]= -dis; 
-		        flags+= std::to_string(-dis); 
-		        
+		        equalizer[1]= int(-relative_const(MIN_DIST_LEFT,v_data[0])*1.5);		        
 		    }else{
-		        dis = relative_const(v_data[0],MAX_DIST_LEFT);
-			dis = int(dis*1.5);
-			equalizer[1]= dis; 
-		        flags+= std::to_string(dis); 
+			equalizer[1]= int(relative_const(v_data[0],MAX_DIST_LEFT)*1.5);
 		    }
 		}
 		break;
 	case 0:
 		if(v_data[0]<MIN_DIST_RIGHT || v_data[0]>MAX_DIST_RIGHT){
 		    if(v_data[0]<MIN_DIST_RIGHT){
-		        dis = relative_const(MIN_DIST_RIGHT,v_data[0]);
-		        dis = int(dis*1.5);
-		        equalizer[1]= -dis; 
-		        flags+= std::to_string(-dis); 
-		        
+		        equalizer[1]= int(-relative_const(MIN_DIST_RIGHT,v_data[0])*1.5);
 		    }else{
-		        dis = relative_const(v_data[0],MAX_DIST_RIGHT);
-			dis = int(dis*1.5);
-			equalizer[1]= dis; 
-		        flags+= std::to_string(dis); 
+			equalizer[1]= int(relative_const(v_data[0],MAX_DIST_RIGHT)*1.5);
 		    }
 		}
 		break;
 		}
-		
-	flags+= " ";
+	
         if(v_data[2]>UP_RANGE || v_data[2] < DOWN_RANGE)
         {
+            
+            std::cout << v_data[2] << std::endl;
             if(v_data[2]>UP_RANGE)
             {
-                dis = relative_const(v_data[2],UP_RANGE); 
-                dis = int(dis*0.8);
-       		equalizer[2]= -dis;
-		flags+= std::to_string(-dis);
-
+       		equalizer[2]= -int(relative_const(v_data[2],UP_RANGE));
             }else{
-                dis = relative_const(v_data[2],DOWN_RANGE);
-       		dis = int(dis*0.8);
-       		equalizer[2]= dis;
-                flags+= std::to_string(dis);
+       		equalizer[2]= int(relative_const(v_data[2],DOWN_RANGE));
             }
         }
-        flags+= " ";
-        
-        
+               
         
 	if(v_data[3]>YAW_RANGE)
         {
@@ -225,29 +196,9 @@ int* drone::move_drone(){
             }
         }
         
-      /*  if(v_data[3]>YAW_RANGE )
-        {
-            if(v_data[4]==1){
-            	equalizer[3] = -4;
-            	flags+="4";
-                flags = "rc 15 -5 0 10";
-		equalizer[0] = 10;
-		equalizer[1] = -5;
-		equalizer[2] = 0;
-		equalizer[3] = 10;
-            }else{ 
-                equalizer[3] = 4;
-                flags+="4";
-                flags = "rc -15 -5 0 -10";
-		equalizer[0] = -10;
-		equalizer[1] = -5;
-		equalizer[2] = 0;
-		equalizer[3] = -10;              
-            }
-        }*/
+
         
     }else{
-    	flags = "rc 0 0 0 0";
     	equalizer[0] = -1;
     	equalizer[1] = -1;
     	equalizer[2] = -1;
