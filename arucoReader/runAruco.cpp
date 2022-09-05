@@ -21,7 +21,7 @@
 #include <string.h>
 /*@Ye*/
 
-int AVRAGE = 10;
+int AVRAGE = 5;
 float SLEEP =1000;
 /*Tello part*/
 //std::shared_ptr<cv::VideoCapture> capture;
@@ -56,7 +56,7 @@ void theEqualizer(int ac[], int* eq, int round){
 	ac[1] += eq[1];
 	ac[2] += eq[2];
 	ac[3] += eq[3];
-	if(round%10==0){
+	if(round%AVRAGE==0){
 		ac[0] = ac[0]/AVRAGE;
 		ac[1] = ac[1]/AVRAGE;
 		ac[2] = ac[2]/AVRAGE;
@@ -110,10 +110,12 @@ void runAruco(aruco &detector, drone *myDrone, ctello::Tello& tello){
         int staller  = 0;
         int* equalizer;
 	int accumulate[4] = {0};
-        tello.SendCommand("rc 0 0 18 0");
+        
         while(detector.ifArucoExist == 0){
         	std::cout << "waiting for aruco" << std::endl;        	
 	}
+	
+	tello.SendCommand("rc 0 0 25 0");
 	sleep(2);
 	/*if(detector.rightLeft > 0.2)
         	myDrone->setRightOrLeft(0); // left drone
@@ -134,7 +136,7 @@ void runAruco(aruco &detector, drone *myDrone, ctello::Tello& tello){
 	equalizer = myDrone->move_drone();
 	if(equalizer[0] == -1 && equalizer[1] == -1 && equalizer[2] == -1 && equalizer[3] == -1){
 		dontsee++;
-		if(dontsee >= 1500){
+		if(dontsee >= 1000){
 			acquiring(detector, tello);
 			dontsee = 0;
 		}

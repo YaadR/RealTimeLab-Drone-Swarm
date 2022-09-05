@@ -6,7 +6,7 @@
 #include <math.h>
 
 
-float MAX_DIST_LEFT = 1.0;
+float MAX_DIST_LEFT = 0.95;
 float MIN_DIST_LEFT = 0.8;
 
 float MAX_DIST_RIGHT = 1.35;
@@ -17,7 +17,7 @@ float MIN_LEFT_RIGHT = 0.15;
 
 
 float UP_RANGE = 0.25;
-float DOWN_RANGE = 0.1;
+float DOWN_RANGE = 0.0;
 
 float YAW_RANGE = 15;
 
@@ -116,14 +116,14 @@ int* drone::move_drone(){
                 case 1:
                     if(v_data[1] > -MIN_LEFT_RIGHT){
                         dis = relative_const(MIN_LEFT_RIGHT,v_data[1]);
-                        dis = int(dis*1.5);
+                        dis = int(dis*1.2);
                         equalizer[0]= -dis;
                         flags+= std::to_string(-dis);
 
                         
                     }else if(v_data[1] < -MAX_LEFT_RIGHT){
                     	dis = relative_const(v_data[1],MAX_LEFT_RIGHT);
-                        dis = int(dis*1.5);
+                        dis = int(dis*1.2);
                         equalizer[0]= dis;
                         flags+= std::to_string(dis);
                     }                  
@@ -131,14 +131,14 @@ int* drone::move_drone(){
                 case 0:
                     if(v_data[1] > MAX_LEFT_RIGHT){
                         dis = relative_const(MIN_LEFT_RIGHT,v_data[1]);
-                        dis = int(dis*1.5);
+                        dis = int(dis*1.2);
                         equalizer[0]= -dis;
                         flags+= std::to_string(-dis);
 
                     }else if(v_data[1] < MIN_LEFT_RIGHT){
  
                         dis = relative_const(v_data[1],MAX_LEFT_RIGHT);
-                        dis = int(dis*1.5);
+                        dis = int(dis*1.2);
                         equalizer[0]= dis;
                         flags+= std::to_string(dis);              
                     }                 
@@ -190,13 +190,13 @@ int* drone::move_drone(){
             if(v_data[2]>UP_RANGE)
             {
                 dis = relative_const(v_data[2],UP_RANGE); 
-                dis = int(dis*0.5);
+                dis = int(dis*0.8);
        		equalizer[2]= -dis;
 		flags+= std::to_string(-dis);
 
             }else{
                 dis = relative_const(v_data[2],DOWN_RANGE);
-       		dis = int(dis*0.5);
+       		dis = int(dis*0.8);
        		equalizer[2]= dis;
                 flags+= std::to_string(dis);
             }
