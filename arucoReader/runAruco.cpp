@@ -84,21 +84,18 @@ void theStringer(int* arr,ctello::Tello& tello){
 /*Tello part end*/
 
 void acquiring(aruco &detector, ctello::Tello& tello){
-	int count = 70;
+	int count = 100;
 	
 	if(detector.ifArucoExist == 0){
 		
-		while(count != 0){
-			if(detector.ifArucoExist == 1)
-				return;
+		while(detector.ifArucoExist != 1){
+
 			std::cout << " can't find aRuco" << std::endl;
-			tello.SendCommand("rc 0 0 0 25");
-			sleep(0.5);
+			tello.SendCommand("rc 0 0 0 40");
+			usleep(500);
 			count--;
+
 		}
-	}
-	else{
-		return;
 	}
 	if(count == 0)
 		//tello.SendCommand("land");
@@ -115,7 +112,7 @@ void runAruco(aruco &detector, drone *myDrone, ctello::Tello& tello){
         	std::cout << "waiting for aruco" << std::endl;        	
 	}
 	
-	tello.SendCommand("rc 0 0 25 0");
+	tello.SendCommand("rc 0 0 20 0");
 	sleep(2);
 	/*if(detector.rightLeft > 0.2)
         	myDrone->setRightOrLeft(0); // left drone
@@ -145,6 +142,7 @@ void runAruco(aruco &detector, drone *myDrone, ctello::Tello& tello){
 		equalizer[2] == 0;
 		equalizer[3] == 0;
 		std::cout << dontsee << std::endl;
+		tello.SendCommand("rc 0 0 0 0");
 	}
 	else{
 		dontsee = 0;
