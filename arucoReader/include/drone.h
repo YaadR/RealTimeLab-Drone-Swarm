@@ -1,6 +1,4 @@
 #include "aruco.h"
-
-/*@Y*/
 #include <stdio.h>
 #include <iostream>
 #include <vector>
@@ -11,16 +9,6 @@
 #include <stdlib.h>
 #include <cstdlib>
 #include <string.h>
-/*
-#define MAX_DIST 1.2;
-#define MIN_DIST 0.8;
-#define MAX_LEFT_RIGHT 0.4;
-#define MIN_LEFT_RIGHT 0.2;
-#define UP_DOWN_RANGE 0.15;
-#define YAW_RANGE 0.1;
-#define ROTATE_RANGE 0.1;
-/*@Ye*/
-
 
 class drone{
     private:
@@ -35,15 +23,10 @@ class drone{
 
         bool ifArucoExist ;             //necessary only for raw info 
 
-        //std::vector <auto> rawInfo = {rightLeft, forward, upDown, angle , ifArucoExist};  //to implement later
-
         int idr ;                   //check if still relevant
        	bool clockwise;             //check if still relevant
         bool runCamera ;            //check if still relevant
         bool RightOrLeft = 1;           //check if still relevant
-
-        //static std::vector <float> relativePositionRight = {0,0,0,0};   //need to check syntax
-        //static std::vector <float> relativePositionLeft = {0,0,0,0};    //need to check syntax
 
         aruco* ourAruco;
 
