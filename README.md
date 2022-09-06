@@ -5,8 +5,8 @@
 
 ### Authors:
 
-*[Almog Hadad](https://github.com/AlmogHadad)
-*[Daniel Ramrazker](https://github.com/danielramraz)
+* [Almog Hadad](https://github.com/AlmogHadad)
+* [Daniel Ramrazker](https://github.com/danielramraz)
 * [Yaad Rebhun](https://github.com/YaadR)
 
 ## Project description:
