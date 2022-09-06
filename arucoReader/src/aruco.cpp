@@ -77,14 +77,6 @@ void aruco::trackMarkerThread() {
         else
             ifArucoExist = true;
             
-        /*while (rightId < ids.size()) {
-            if (ids[rightId] != 0) {
-                canContinue = true;
-                break;
-            }
-            rightId++;
-        }*/
-        // if at least one marker detected
         if (canContinue) {
         
 
@@ -121,8 +113,6 @@ void aruco::trackMarkerThread() {
             }
           }
             
-        
-        // usleep(100000);
    } 
 }
 

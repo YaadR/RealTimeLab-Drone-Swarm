@@ -16,8 +16,8 @@ float MAX_LEFT_RIGHT = 0.3;
 float MIN_LEFT_RIGHT = 0.15;
 
 
-float UP_RANGE = 10; //0.1;
-float DOWN_RANGE = -15; //-0.1;
+float UP_RANGE = 10; 
+float DOWN_RANGE = -15; 
 
 float YAW_RANGE = 15;
 
@@ -29,18 +29,16 @@ int POWER_SCALE_MIN = 30;
 int POWER_SCALE_MAX = 15;
 
 int equalizer[4] ={0};
-float MINN = 0;
-float  MAXX = 0;
 
 drone::drone(){
 	
 }
 
-void drone::setRightOrLeft(int i){          //check if still relevant    
+void drone::setRightOrLeft(int i){           
 	this->RightOrLeft = i;
 }
 
-double drone::getRightLeft(aruco &detector){    //check if still relevant
+double drone::getRightLeft(aruco &detector){    
 	return detector.rightLeft;
 }
 
@@ -52,13 +50,11 @@ bool drone::getRightOrLeft(){
 
 
 void drone::addInfo(aruco &origin){
-	//this->upDown = origin.upDown;
     	this->forward = origin.forward;
     	this->rightLeft = origin.rightLeft;
     	this->ifArucoExist = origin.ifArucoExist;
     	this->clockwise = origin.leftOverAngle.second;
     	this->angle = origin.leftOverAngle.first;
-    	//this->rollAngle = origin.rollAngle
 	if(origin.rollAngle > 0){
 		this->upDown = origin.upDown*100 + (180 - origin.rollAngle);
 	} else {
@@ -66,10 +62,7 @@ void drone::addInfo(aruco &origin){
 	}
 
 }
-void ret_min_max(float curr){
-	MAXX = MAXX < curr ? curr:MAXX;
-	MINN = MINN > curr ? curr:MINN;
-}
+
 int min_ret(float a, float b){
 		return int(a>=b?b:a);
 
@@ -78,19 +71,11 @@ int max_ret(float a, float b){
 	return int(a<b?b:a);
 }
 int relative_const(float bigger, float smaller){
-		
-		//return max_ret(POWER_SCALE_MAX,min_ret(POWER_SCALE_MIN,((std::abs(bigger)+0.2)/(std::abs(smaller)+0.2))*THE_CONST));
 	
 	return max_ret(POWER_SCALE_MAX,min_ret(POWER_SCALE_MIN,(abs(bigger-smaller)*THE_CONST)));
-	}
+}
 
 
-
-//float check_bounderies(float current, float left, float right, float scale = 1){
-//	if (current <	
-//}
-
-//std::string drone::move_drone(){
 int* drone::move_drone(){
     float v_data[ARUCO_DATA_SIZE] = {0};
     v_data[0] = (float)this->forward;
@@ -118,7 +103,7 @@ int* drone::move_drone(){
 	equalizer[1] = 0;
 	equalizer[2] = 0;
 	equalizer[3] = 0;
-	/**/
+	
 	
     if(v_data[6]){
         if((abs(v_data[1])>MAX_LEFT_RIGHT)||(abs(v_data[1]) < MIN_LEFT_RIGHT)){
@@ -165,8 +150,6 @@ int* drone::move_drone(){
 	
         if(v_data[2]>UP_RANGE || v_data[2] < DOWN_RANGE)
         {
-            
-            std::cout << v_data[2] << std::endl;
             if(v_data[2]>UP_RANGE)
             {
        		equalizer[2]= -int(relative_const(v_data[2],UP_RANGE));
