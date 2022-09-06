@@ -12,6 +12,68 @@
 ## Project description:
 Implementing logic for drone swarm, to aquire and follow aruco, and maintain flight structure , with minimal communication
 
+## Run Me:
+IDE: **Raspberry.pi**
+### Installations required:
+```
+install cmake
+install tello
+```
+### Libraries used:
+1. opencv :
+   * `opencv2`- used to create the aruco reader.
+2. ctello:
+   * `ctello` - used to control the drone.
+3. thread:
+   * `thread` - creating multithreaded program.
+
+### How to run:  
+* download the project to <"some path">.
+* make sure your drone connect to your computer with wifi.
+* in command line:
+```
+cd <some path>
+make
+./runAruco
+```
+
+### Basic interupts:
+#### Quit program:
+You can quit by pressing "ctr + c", the drone will land in his place.
+
+## Algorithem & Math:
+#### 1. Acquiring leader
+  * The drone detect leader aruco and set his own position in the swarm according to relative starting position.
+  * The drone use the Aruco reader to detect the leader, or any other drone.
+#### 2. Detecting leader movement
+  * The aruco reader detect the leader movement in 4 demantions:
+    ##### * up down
+    ##### * left right
+    ##### * forward
+    ##### * yaw
+  * The aruco send the data to drone for calculations.
+#### 3. Bounding box
+  * Frames the boundaries of the detected leader, calculates the leader movement in 4 dementions into one command.
+#### 4. Drone movement logic:
+  * Controling commands frequancy and motor power with averaging data, so the drone movement became smoth.
+#### 5. Lost leader:
+  * In case of losing the leader sight the drone will hold in place and make 360 look around, to check for reconnection with leader.
+
+## Objectives towards finalized product:
+* ???????????????????????????????
+
+*
+*
+*
+*
+*
+*
+*
+----------------------------------------------------------------------------------------------------------------
+
+
+
+
 //Y@ not sure if actually needed.. 
 Project files: 
 1. `PoseEstimationModule.py` - Identify an object and find landmarks 
