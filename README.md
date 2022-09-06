@@ -1,4 +1,4 @@
-#RealTime Lab - Drone Swarm
+# RealTime Lab - Drone Swarm
 
 
 **University of Haifa - RealTime Lab**
@@ -10,7 +10,7 @@
 * [Yaad Rebhun](https://github.com/YaadR)
 
 ## Project description:
-Drones swarm following aruco, with minimal communication
+Implementing logic for drone swarm, to aquire and follow aruco, and maintain flight structure , with minimal communication
 
 //Y@ not sure if actually needed.. 
 Project files: 
