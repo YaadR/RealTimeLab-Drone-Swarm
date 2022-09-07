@@ -10,7 +10,7 @@
 * [Yaad Rebhun](https://github.com/YaadR)
 
 ## Project description:
-Implementing logic for drone swarm, to aquire and follow aruco, and maintain flight structure , with minimal communication
+Implementing Aruco detection and position data, drone movment & swarm structure, maintaining flight structure, with minimal communication
 
 ## Run Me:
 IDE: **Raspberry.pi**
@@ -32,7 +32,7 @@ install tello
 * make sure your drone connect to your computer with wifi.
 * in command line:
 ```
-cd <some path>
+cd <some path>/arucoReader/build
 make
 ./runAruco
 ```
