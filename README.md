@@ -10,10 +10,9 @@
 * [Yaad Rebhun](https://github.com/YaadR)
 
 ## Project description:
-#### Implementing:
-* Aruco detection and position data
-* Drone movment & swarm structure
-* Robust flight structure, with minimal communication
+* Aruco detection and extraction of data position.
+* Drone movment logic & swarm structure.
+* Robust flight structure, with minimal communication.
 
 
 ![Swarm video](Vid/swarmgif.gif)
@@ -48,55 +47,20 @@ You can quit by pressing "ctr + c", the drone will land in his place.
 
 ## Algorithem & Math:
 #### 1. Acquiring leader
-  * The drone detect leader aruco and set his own position in the swarm according to relative starting position.
-  * The drone use the Aruco reader to detect the leader.
+  * The drone detect aruco and set his own position in the swarm according to relative starting position.
+  * The drone use the Aruco reader to identify the leader drone.
   
   
 #### 2. Detecting leader movement
-  * The aruco reader detect the leader movement in 4 demantions:
-    ##### * up down
-    ##### * left right
-    ##### * forward
-    ##### * yaw
-  * The aruco send the data to drone for calculations.
+  * The aruco marker provide position data relative to 3 vectors, which translate into 4 movment axis:
+  ![ArucoVectors](/Vid/aruco-axis.png)
+
 #### 3. Bounding box
-  * Frames the boundaries of the detected leader, calculates the leader movement in 4 dementions into one command.
+  * The logic for the drone movment, is triggered by diviation in drone position from certain distances it needs to maintain. Maximun and minimum distance in the x,y,z axis and constrain delta angle ,all relative to the starting point of the axes defined by the aruco marker. baisicly the drone strive to find oasis zone.
 #### 4. Drone movement logic:
-  * Controling commands frequancy and motor power with averaging data, so the drone movement became smoth.
+  * The more the drone deviates from it's bounding box - the more thrust it puts in correction direction.
 #### 5. Lost leader:
-  * In case of losing the leader sight the drone will hover in place and make 360 look around, to check for reconnection with leader.
+  * In case of sight disruption, the drone will roatate in place, in search for the arocu marker for reconnection with the leader.
 
 
-*
-*
-*
-*
-*
-*
-*
 ----------------------------------------------------------------------------------------------------------------
-
-
-3. ***Read video/image file*** - `argv[1]=<file_path>`
-* ![Drone mode1](MarkdownFiles/video_file.gif)
-
-## Math & Logic operations:
-#### 1. Rescale frame
-Resize the image according to the given percentage ratio
-#### 2. Hotzones
-Drawing perpendicular lines that maintain the pre-borders of the frame, relative to acquired object or given values.
-* The <span style="color:red">***red***</span> lines - marks an anomaly of the object from the allowed regions, positioned at one body-width from the edges of the frame.
-* The <span style="color:yellow">***yellow***</span> lines - marks the place where the object is suppose to move, if the red line is crossed, positioned at two body-widths away from the frame edges.
-  * The lines will collide at the frame center, under no circumstances will the yellow lines overlap each other
-
-![HotZones](/MarkdownFiles/hotZones.png)
-
-
-Frames the boundaries of the detected object, calculates the maximum length between the figure's shoulders and the figure's waist.
-#### 4. From detection to acquirement
-In order to acquire the character, all parts of the image that do not contain the identified object are zero-padded.
-At object detection, a counter ('adj') counts frames. As it finds an object it crops a relative window, sized 1.8 times the figure bounding box size, zero-pads the rest of the frame,
-and 'feeds' the detection algorithm with the cropped frame at subsequent
-cycle.
-
-![croped image](/MarkdownFiles/crop_image.png)
