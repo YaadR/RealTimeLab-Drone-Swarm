@@ -10,8 +10,13 @@
 * [Yaad Rebhun](https://github.com/YaadR)
 
 ## Project description:
-Implementing Aruco detection and position data, drone movment & swarm structure, maintaining flight structure, with minimal communication
+#### Implementing:
+* Aruco detection and position data
+* Drone movment & swarm structure
+* Robust flight structure, with minimal communication
 
+
+![Swarm video](Vid/swarmgif.gif)
 ## Run Me:
 IDE: **Raspberry.pi**
 ### Installations required:
@@ -44,7 +49,9 @@ You can quit by pressing "ctr + c", the drone will land in his place.
 ## Algorithem & Math:
 #### 1. Acquiring leader
   * The drone detect leader aruco and set his own position in the swarm according to relative starting position.
-  * The drone use the Aruco reader to detect the leader, or any other drone.
+  * The drone use the Aruco reader to detect the leader.
+  
+  
 #### 2. Detecting leader movement
   * The aruco reader detect the leader movement in 4 demantions:
     ##### * up down
@@ -57,10 +64,8 @@ You can quit by pressing "ctr + c", the drone will land in his place.
 #### 4. Drone movement logic:
   * Controling commands frequancy and motor power with averaging data, so the drone movement became smoth.
 #### 5. Lost leader:
-  * In case of losing the leader sight the drone will hold in place and make 360 look around, to check for reconnection with leader.
+  * In case of losing the leader sight the drone will hover in place and make 360 look around, to check for reconnection with leader.
 
-## Objectives towards finalized product:
-* ???????????????????????????????
 
 *
 *
@@ -70,62 +75,6 @@ You can quit by pressing "ctr + c", the drone will land in his place.
 *
 *
 ----------------------------------------------------------------------------------------------------------------
-
-
-
-
-//Y@ not sure if actually needed.. 
-Project files: 
-1. `PoseEstimationModule.py` - Identify an object and find landmarks 
-2. `PoseProject.py` - Capture image, detect object, and calculate object motion
-
-
-## Run Me:
-IDE: **Raspberry.pi**
-### Installations:
-
-//@Y also not sure what to write here...
-```
-pip install opencv-python
-pip install mediapipe 
-pip install numpy
-```
-
-To run the code on the Tello drone, install [tello directory.](https://github.com/damiafuentes/DJITelloPy)
-
-### Libraries:
-1. PoseEstimationModule.py :
-   * `Mediapipe`- ML solution for real-time object detection, used for pedestrian detection
-   * `time` - Synchronizes and tracks real-time processes
-   * `Numpy` - Performs matrix operations on an image
-2. PoseProject.py:
-   * `argv from sys` - Passes arguments from external devices
-   * `opencv /cv2` - Library of programming functions mainly aimed at real-time CV
-   * `time` - Synchronizes and tracks real-time processes
-   * `PoseEstimationModule` – Our module
-   * `Numpy` - Performs matrix operations on an image
-   * `Datetime` – Records implementation
-   * `Tello form djitellopy` – Tello drone API
-### Arguments:
-The program recive 2 input argoments
- * `argv[1]` – Captures input. `0`= Integrated camera; `1`= Drone; `<file_path>`= Reads video file
- * `argv[2]`- Draws symbols over the input. `True`/`False`
-
-### Basic interupts:
-#### Quit program:
-You can quit by pressing `Esc` button. If the program is at ***drone mode*** the drone will land with the execution of this command
-#### Recording:
-The program has video recording capabilities. Given the recording command, a red circle mark appears in the upper right corner of the window
-* `R` - start recording
-* `S` - stop recording
-
-## Modes:
-1. ***Integrated camera mode*** - `argv[1]='0'`
-* ![Integrated camera mode](MarkdownFiles/integrated_camera.gif)
-
-2. ***Drone mode*** - `argv[1]='1'`
-* ![Drone mode2](MarkdownFiles/drone_flight2.gif)
-* ![Drone mode1](MarkdownFiles/drone_flight1.gif)
 
 
 3. ***Read video/image file*** - `argv[1]=<file_path>`
@@ -142,7 +91,7 @@ Drawing perpendicular lines that maintain the pre-borders of the frame, relative
 
 ![HotZones](/MarkdownFiles/hotZones.png)
 
-#### 3. Bounding box
+
 Frames the boundaries of the detected object, calculates the maximum length between the figure's shoulders and the figure's waist.
 #### 4. From detection to acquirement
 In order to acquire the character, all parts of the image that do not contain the identified object are zero-padded.
@@ -151,20 +100,3 @@ and 'feeds' the detection algorithm with the cropped frame at subsequent
 cycle.
 
 ![croped image](/MarkdownFiles/crop_image.png)
-
-#### 5. Drone movement logic:
-  * front – object to frame ratio. front >0.4 – move backward, front<0.2 - move
-  forward
-  * yaw – derive logic from Hotzones – while red line is crossed, rotate towards the
-  frame center until yellow line is crossed back to approved zone
-  * isUp – solution for Tello drone properties – gives minor up and down
-  movement so the drone remains active (the Tello drone aborts after 15s of not
-  receiving any orders)
-  
-## Objectives towards finalized product:
-* Modularity - Option to run on a number of different devices
-* Loading and running over raspberry pi
-* Scalability - Supports the identification and acquires multiple objects simultaneously
-* Robustness - resistance to extreme cases
-* MediaPipe is Google's open source directory and therefore it is not legal to market the
-product as is, at least in principle
