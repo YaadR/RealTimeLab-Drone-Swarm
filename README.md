@@ -58,7 +58,7 @@ You can quit by pressing "ctr + c", the drone will land in his place.
 #### 3. Bounding box
   * The logic for the drone movment, is triggered by diviation in drone position from certain distances it needs to maintain. Maximun and minimum distance in the x,y,z axis and constrain delta angle ,all relative to the starting point of the axes defined by the aruco marker. baisicly the drone strive to find oasis zone.
 #### 4. Drone movement logic:
-  * The more the drone deviates from it's bounding box - the more thrust it puts in correction direction.
+  * The more the drone diviates from it's bounding box - the more thrust it puts in the direction of correction.
 #### 5. Lost leader:
   * In case of sight disruption, the drone will roatate in place, in search for the arocu marker for reconnection with the leader.
 
